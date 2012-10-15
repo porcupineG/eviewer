@@ -1,9 +1,6 @@
 import QtQuick 1.1
 
 Rectangle  {
-    property real start: 0
-    property real stop:  100
-
     id: timeline
 
     gradient: Gradient {
@@ -14,8 +11,6 @@ Rectangle  {
     }
 
     Description {
-        start: timeline.start
-        stop: timeline.stop
         anchors.fill: timeline
     }
 
