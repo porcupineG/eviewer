@@ -1,14 +1,19 @@
 #include <QApplication>
-#include "qmlapplicationviewer.h"
+#include <QtDeclarative/QDeclarativeView>
+#include <QPlastiqueStyle>
 
-Q_DECL_EXPORT int main(int argc, char *argv[])
-{
-    QScopedPointer<QApplication> app(createApplication(argc, argv));
+#include "mainwindow.h"
 
-    QmlApplicationViewer viewer;
-    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-    viewer.setMainQmlFile(QLatin1String("qml/eviewer/Main.qml"));
-    viewer.showExpanded();
+int main(int argc, char *argv[]) {
 
-    return app->exec();
+    QApplication app(argc, argv);
+    app.setStyle(new QPlastiqueStyle);
+
+    MainWindow mainWindow;
+    QDeclarativeView declarativeView;
+    declarativeView.setSource(QUrl("qrc:/qml/Main.qml"));
+    mainWindow.setCentralWidget(&declarativeView);
+    mainWindow.show();
+
+    return app.exec();
 }
