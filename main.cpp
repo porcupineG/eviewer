@@ -1,8 +1,8 @@
 #include <QApplication>
-#include <QtDeclarative/QDeclarativeView>
 #include <QPlastiqueStyle>
 
 #include "mainwindow.h"
+#include "declarativeview.h"
 
 int main(int argc, char *argv[]) {
 
@@ -10,10 +10,13 @@ int main(int argc, char *argv[]) {
     app.setStyle(new QPlastiqueStyle);
 
     MainWindow mainWindow;
-    QDeclarativeView declarativeView;
+    DeclarativeView declarativeView;
     declarativeView.setSource(QUrl("qrc:/qml/Main.qml"));
+    declarativeView.setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    declarativeView.setAutoFillBackground(true);
+
     mainWindow.setCentralWidget(&declarativeView);
-    mainWindow.show();
+    mainWindow.showMaximized();
 
     return app.exec();
 }

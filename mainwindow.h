@@ -9,6 +9,7 @@
 #include "menubar.h"
 #include "infodock.h"
 #include "groupfiltersdock.h"
+#include "settingsdock.h"
 
 class MainWindow : public QMainWindow
 {
@@ -20,10 +21,11 @@ private:
 
     InfoDock infoDock;
     GroupFiltersDock groupFiltersDock;
+    SettingsDock settingsDock;
 
     QAction infoDockAction;
     QAction groupFiltersDockAction;
-
+    QAction settingsDockAction;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

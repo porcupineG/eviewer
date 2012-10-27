@@ -4,14 +4,18 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     infoDock(tr("Information")),
     groupFiltersDock(tr("Group filters")),
+    settingsDock(tr("Settings")),
     infoDockAction(QIcon(":/icons/24x24/info.png"), tr("Information"), this),
-    groupFiltersDockAction(QIcon(":/icons/24x24/search.png"), tr("Group filters"), this)
+    groupFiltersDockAction(QIcon(":/icons/24x24/search.png"), tr("Group filters"), this),
+    settingsDockAction(QIcon(":/icons/24x24/settings.png"), tr("Settings"), this)
 {
     addToolBar(&toolBar);
     setStatusBar(&statusBar);
     setMenuBar(&menuBar);
+    toolBar.addSeparator();
     addDockWidget(Qt::RightDockWidgetArea, &infoDock);
     addDockWidget(Qt::RightDockWidgetArea, &groupFiltersDock);
+    addDockWidget(Qt::LeftDockWidgetArea, &settingsDock);
 
     setContextMenuPolicy(Qt::NoContextMenu);
 
@@ -25,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent) :
     groupFiltersDockAction.setCheckable(true);
     connect(&groupFiltersDockAction, SIGNAL(toggled(bool)), &groupFiltersDock, SLOT(setVisible(bool)));
     connect(&groupFiltersDock, SIGNAL(visibilityChanged(bool)), &groupFiltersDockAction, SLOT(setChecked(bool)));
+
+    toolBar.addAction(&settingsDockAction);
+    settingsDockAction.setCheckable(true);
+    connect(&settingsDockAction, SIGNAL(toggled(bool)), &settingsDock, SLOT(setVisible(bool)));
+    connect(&settingsDock, SIGNAL(visibilityChanged(bool)), &settingsDockAction, SLOT(setChecked(bool)));
+
 
 }
 

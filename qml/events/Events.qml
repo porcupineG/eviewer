@@ -30,15 +30,8 @@ Rectangle {
              model: listModel
              spacing: 10
              delegate: Row {
-                 Rectangle {
-                    height: 100
-                    width: 10000
+                 Source {
                     color: colour
-
-                    Text {
-                        text: "123456789"
-                    }
-
                  }
              }
         }

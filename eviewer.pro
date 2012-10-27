@@ -9,12 +9,16 @@ SOURCES += main.cpp \
     toolbar.cpp \
     menubar.cpp \
     infodock.cpp \
-    groupfiltersdock.cpp
+    groupfiltersdock.cpp \
+    settingsdock.cpp \
+    declarativeview.cpp
 
 OTHER_FILES += \
     qml/timeline/Timeline.qml \
-    qml/timeline/Description.qml \
-    qml/Main.qml
+    qml/events/Events.qml \
+    qml/events/Source.qml \
+    qml/Main.qml \
+    qml/core.js
 
 HEADERS += \
     mainwindow.h \
@@ -22,7 +26,9 @@ HEADERS += \
     toolbar.h \
     menubar.h \
     infodock.h \
-    groupfiltersdock.h
+    groupfiltersdock.h \
+    settingsdock.h \
+    declarativeview.h
 
 RESOURCES += \
-    qml.qrc
+    res.qrc

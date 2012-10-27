@@ -5,9 +5,7 @@ import "events"
 import "core.js" as Core
 
 Item  {
-    id:     main
-    width:  800
-    height: 400
+    id: main
 
     Events {
         anchors.top: timeline.bottom
@@ -21,7 +19,9 @@ Item  {
         anchors.top:    main.top
         anchors.left:   sidebar.right
         anchors.right:  main.right
-        height: Core.timelineHeight
+        height:     Core.timelineHeight
+        startSec: 0
+        stopSec: 100
     }
 
     Rectangle {
@@ -29,8 +29,12 @@ Item  {
         anchors.left: main.left
         anchors.top: main.top
         anchors.bottom: main.bottom
-        width: Core.sideBarWidth
+        width: Core.viewWidth
         color: "orange"
+        Text {
+            id: textId
+            text: "" + Core.getWidth()
+        }
     }
 
 }
