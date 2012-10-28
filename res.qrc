@@ -1,10 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/Main.qml</file>
-        <file>qml/core.js</file>
-        <file>qml/timeline/Timeline.qml</file>
-        <file>qml/events/Events.qml</file>
-        <file>qml/events/Source.qml</file>
         <file>icons/24x24/info.png</file>
         <file>icons/24x24/search.png</file>
         <file>icons/24x24/settings.png</file>

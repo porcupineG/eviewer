@@ -1,7 +1,6 @@
-CONFIG -= debug_and_release debug
-CONFIG += release
+CONFIG += debug
 
-QT += declarative
+QT += gui graphics
 
 SOURCES += main.cpp \
     mainwindow.cpp \
@@ -11,14 +10,9 @@ SOURCES += main.cpp \
     infodock.cpp \
     groupfiltersdock.cpp \
     settingsdock.cpp \
-    declarativeview.cpp
-
-OTHER_FILES += \
-    qml/timeline/Timeline.qml \
-    qml/events/Events.qml \
-    qml/events/Source.qml \
-    qml/Main.qml \
-    qml/core.js
+    graphicsview.cpp \
+    graph.cpp \
+    source.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -28,7 +22,9 @@ HEADERS += \
     infodock.h \
     groupfiltersdock.h \
     settingsdock.h \
-    declarativeview.h
+    graphicsview.h \
+    graph.h \
+    source.h
 
 RESOURCES += \
     res.qrc

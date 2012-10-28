@@ -1,21 +1,17 @@
 #include <QApplication>
 #include <QPlastiqueStyle>
+#include <QDebug>
 
 #include "mainwindow.h"
-#include "declarativeview.h"
+#include "graphicsview.h"
 
 int main(int argc, char *argv[]) {
-
     QApplication app(argc, argv);
     app.setStyle(new QPlastiqueStyle);
 
     MainWindow mainWindow;
-    DeclarativeView declarativeView;
-    declarativeView.setSource(QUrl("qrc:/qml/Main.qml"));
-    declarativeView.setResizeMode(QDeclarativeView::SizeRootObjectToView);
-    declarativeView.setAutoFillBackground(true);
-
-    mainWindow.setCentralWidget(&declarativeView);
+    GraphicsView graphicsView;
+    mainWindow.setCentralWidget(&graphicsView);
     mainWindow.showMaximized();
 
     return app.exec();
