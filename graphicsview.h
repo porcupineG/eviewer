@@ -13,11 +13,11 @@ protected:
     QPoint LastPanPoint;
     void SetCenter(const QPointF& centerPoint);
     QPointF GetCenter() { return CurrentCenterPoint; }
-    virtual void mousePressEvent(QMouseEvent* event);
-    virtual void mouseReleaseEvent(QMouseEvent* event);
-    virtual void mouseMoveEvent(QMouseEvent* event);
-    virtual void wheelEvent(QWheelEvent* event);
-    virtual void resizeEvent(QResizeEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
+    void resizeEvent(QResizeEvent* event);
 
 public:
     GraphicsView();

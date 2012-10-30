@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     settingsdock.cpp \
     graphicsview.cpp \
     graph.cpp \
-    source.cpp
+    source.cpp \
+    timeline.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -24,7 +25,8 @@ HEADERS += \
     settingsdock.h \
     graphicsview.h \
     graph.h \
-    source.h
+    source.h \
+    timeline.h
 
 RESOURCES += \
     res.qrc
