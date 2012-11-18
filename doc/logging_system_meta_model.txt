@@ -1,0 +1,135 @@
+"META-META" MODEL
+
+Level							//This is hardcoded part of the meta-model
+	Identifiers					//This is model-specific, multiple identifiers are allowed
+	Sub-levels					//This is model-specific, multiple sub-levels are allowed
+	Log Types definition		//This is model-specific, multiple log types are allowed
+		Log Codes definitons	//This is model-specific, each log type has it own log codes definition
+
+
+
+
+
+
+META MODEL:
+
+CPU & Network level
+	CPU & Network sub-levels
+		CPU & Network sub-level identifiers
+		CPU & Network sub-level log types
+			Log codes for specific type
+Runtime Environment level
+	Runtime Environment sub-levels
+		Runtime Environment sub-level identifiers
+		Runtime Environment sub-level log types
+			Log codes for specific type
+Process level
+	Process sub-levels
+		Process sub-level identifiers
+		Process sub-level log types
+			Log codes for specific type
+Application component level
+	Application component sub-levels
+		Application component sub-level identifiers
+		Application component sub-level log types
+			Log codes for specific type
+
+
+
+
+
+	
+MODEL EXAMPLE:
+
+<CPU & Network>						//meta-model "hardcoded" logging level
+	<NO_ID>							//id for this level (in this case none)
+	<PC & Network>					//model specific logging sub-level
+<Runtime Environment>
+	<PPE_ID>						//id for this level
+	<POBICOS Proxy Environment>
+		<LOG_TYPE_1>				//log type definition for the sub-level
+			<LOG_CODE_1>			//log code definition for log_type_1
+			<LOG_CODE_2>
+		<LOG_TYPE_2>
+			<LOG_CODE_1>
+<Process>							//For POBICOS model, the process level has three sub-levels
+	<NODE_ADDRESS>					//Node address is the indetifier for process level
+	<Proxy>							//Proxy sub-level
+		<LOG_TYPE_1>				
+			<LOG_CODE_1>			
+			<LOG_CODE_2>
+		<LOG_TYPE_2>
+			<LOG_CODE_1>
+	<Middleware>					//Middleware sub-level
+		<LOG_TYPE_1>
+			<LOG_CODE_1>
+			<LOG_CODE_2>
+	<POBICOS API>					//POBICOS API sub-level
+		<LOG_TYPE_1>
+			<LOG_CODE_1>
+			<LOG_CODE_2>
+		<LOG_TYPE_2>
+			<LOG_CODE_1>
+<Application component>
+	<Micro-agent>
+		<APP_ID>
+		<AGENT_TYPE>				//Micro-agent sub level has two identifiers
+		<AGENT_ID>					//agent_type and agent_id
+		<LOG_TYPE_1>
+			<LOG_CODE_1>
+			<LOG_CODE_2>
+		<LOG_TYPE_2>
+			<LOG_CODE_1>
+
+
+XML example
+
+
+
+<cpu_and_network>
+	<id size=0 ></id>
+	<level>
+		<name>PC & Network</name>
+	</level>
+</cpu_and_network>
+<runtime_environment>
+	<id size=8 >PPE_ID</id>
+	<level>
+		<name>POBICOS Proxy Environment</name>
+		<log_type name="MUX status" value="0x1A47" indicator="0">
+			<log_code value="0x00000001">MUX_STARTED</log_code>
+			<log_code value="0x00000002">MUX_KILLED</log_code>
+			<log_code value="0x00000003">SPN_CONNECTED</log_code>
+			<log_code value="0x00000004">SPN_DISCONECTED</log_code>
+		</log_type>
+		<log_type name="Portplex status" value="0x1A45" indicator="0">
+			<log_code value="0x00000001">PORTPLEX_STARTED</log_code>
+			<log_code value="0x00000002">PORTPLEX_KILLED</log_code>
+		</log_type>
+	</level>
+</runtime_environment>
+<process>
+	<id size=16 >NODE_ADDR</id>
+	<level>
+		<name>Proxy</name>
+	</level>
+	<level>
+		<name>Middleware</name>
+	</level>
+	<level>
+		<name>POBICOS API</name>
+	</level>
+</process>
+<application_component>
+	<id size=32 >APP_ID</id>
+	<id size=32 >AGENT_ID</id>
+	<id size=32 >AGENT_TYPE</id>
+	<level>
+		<name>Micro-agent</name>
+	</level>
+</application_component>
+
+		
+Resulting log structure:
+<HEADER><PPE_ID><NODE_ADDRESS><APP_ID><AGENT_ID><AGENT_TYPE>
+

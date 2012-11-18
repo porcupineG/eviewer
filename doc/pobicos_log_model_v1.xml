@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<log_model>
+	<cpu_and_network>
+		<id size="0" ></id>
+		<level>
+			<name>PC and Network</name>
+		</level>
+	</cpu_and_network>
+	<runtime_environment>
+		<id size="8" >PPE_ID</id>
+		<level>
+			<name>POBICOS Proxy Environment</name>
+
+			<log_type name="Portplex status" value="0x1240" indicator="0" priority="1" log_struct="1">
+				<log_code value="0x00000001">PORTPLEX_STARTED</log_code>
+				<log_code value="0x00000002">PORTPLEX_KILLED</log_code>
+			</log_type>
+			
+			<log_type name="Portplex error" value="0x1641" indicator="0" priority="3" log_struct="1">
+			</log_type>
+			
+                        <log_type name="MUX status" value="c" indicator="0" priority="1" log_struct="1">
+				<log_code value="0x00000001">MUX_STARTED</log_code>
+				<log_code value="0x00000002">MUX_KILLED</log_code>
+				<log_code value="0x00000003">SPN_CONNECTED</log_code>
+				<log_code value="0x00000004">SPN_DISCONECTED</log_code>
+			</log_type>
+			
+			<log_type name="MUX error" value="0x1643" indicator="0" priority="3" log_struct="1">
+			</log_type>
+			
+			<log_type name="ProxyManager status" value="0x1244" indicator="0" priority="1" log_struct="1">
+			</log_type>
+			
+			<log_type name="ProxyManager error" value="0x1645" indicator="0" priority="3" log_struct="1">
+			</log_type>
+			
+			<log_type name="Portplex performance" value="0x1A46" indicator="1" priority="1" log_struct="1">
+				<log_code value="0x00000001">Total transmitted bytes per second</log_code>
+				<log_code value="0x00000002">Total received bytes per second</log_code>
+				<log_code value="0x00000003">Bytes transmitted to other portplexes per second</log_code>
+				<log_code value="0x00000004">Bytes received from other portplexes per second</log_code>
+			</log_type>
+			
+			<log_type name="MUX performance" value="0x1A47" indicator="1" priority="1" log_struct="1">
+				<log_code value="0x00000001">Total transmitted bytes per second</log_code>
+				<log_code value="0x00000002">Total received bytes per second</log_code>
+			</log_type>
+			
+			<log_type name="ProxyManager performance" value="0x1A48" indicator="1" priority="1" log_struct="1">
+			</log_type>
+
+		</level>
+	</runtime_environment>
+	<process>
+		<id size="16" >NODE_ADDR</id>
+		<level>
+			<name>Proxy</name>
+			
+			<log_type name="Proxy status" value="0x2280" indicator="0" priority="1" log_struct="2">
+				<log_code value="0x00000001">PORTPLEX_CONNECTED</log_code>
+				<log_code value="0x00000002">PORTPLEX_DISCONNECTED</log_code>
+				<log_code value="0x00000003">NODE_SHUTDOWN</log_code>
+			</log_type>
+		</level>
+		<level>
+			<name>Middleware</name>
+			<log_type name="Middleware status" value="0x22C0" indicator="0" priority="1" log_struct="2">
+				
+			</log_type>
+			<log_type name="Runtime status" value="0x52C1" indicator="0" priority="1" log_struct="5">
+				<log_code value="0x00000001">E_NEW_RUNTIME_CREATED</log_code>
+				<log_code value="0x00000002">E_RUNTIME_REMOVED</log_code>
+				<log_code value="0x00000003">E_CONTEXT_CHANGED</log_code>
+				<log_code value="0x00000004">E_NEW_EVENT_FOR_AGENT</log_code>
+				<log_code value="0x00000005">E_EVENT_MASKED_BY_AGENT</log_code>
+				<log_code value="0x00000006">E_EVENT_IGNORED_AGENT_FINALIZED</log_code>
+			</log_type>
+			<log_type name="Runtime warning" value="0x54C2" indicator="0" priority="2" log_struct="5">
+				<log_code value="0x00000001">E_NO_SPACE_FOR_NEW_RUNTIME</log_code>
+				<log_code value="0x00000002">E_RUNTIME_ALREADY_EXISTING</log_code>
+				<log_code value="0x00000003">E_UNABLE_TO_READ_DATA_SECTION</log_code>
+				<log_code value="0x00000004">E_TRIED_TO_REMOVE_NON_EXISTING_RUNTIME</log_code>
+				<log_code value="0x00000005">E_AGENT_SUSPEND_FAIL</log_code>
+			</log_type>
+		</level>
+		<level>
+			<name>POBICOS API</name>
+			<log_type name="Non-generic event signalled" value="0x5300" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			<log_type name="Generic event signalled" value="0x5301" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			<log_type name="Non-generic instruction called" value="0x5302" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			<log_type name="Generic instruction called" value="0x5303" indicator="0" priority="1" log_struct="5">
+			</log_type>
+		</level>
+	</process>
+	<application_component>
+		<id size="32" >APP_ID</id>
+		<id size="32" >AGENT_ID</id>
+		<id size="32" >AGENT_TYPE</id>
+		<level>
+			<name>Micro-agent</name>
+		</level>
+	</application_component>
+</log_model>

@@ -3,5 +3,7 @@
         <file>icons/24x24/info.png</file>
         <file>icons/24x24/search.png</file>
         <file>icons/24x24/settings.png</file>
+        <file>icons/24x24/zoom_in.png</file>
+        <file>icons/24x24/zoom_out.png</file>
     </qresource>
 </RCC>

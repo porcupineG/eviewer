@@ -1,0 +1,5 @@
+*.pro.user
+.rcc/
+.obj/
+.moc/
+.ui/

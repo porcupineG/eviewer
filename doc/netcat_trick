@@ -1,0 +1,3 @@
+cat log_file_2012_10_31 | nc -l 7001
+
+./viewer.py 127.0.0.1
