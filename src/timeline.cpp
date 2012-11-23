@@ -59,24 +59,37 @@ void Timeline::zoomOut()
     update();
 }
 
+void Timeline::setInfoWidget(QWidget * widget)
+{
+    emit viewInfoWidget(widget);
+}
 
 void Timeline::update()
 {
 
+    // Clear all table
     clear();
     clearContents();
 
+    // Set row and column count to fit sources and graphs
     setRowCount(graphs.count() + sources.count() + 1);
     setColumnCount(timestamps.count());
 
-    setSpan(0, 0, 1, timestamps.count());
+    // Set Timeline
+    setSpan(0, 0, 1, columnCount());
     timelineBar = new TimelineBar();
     setCellWidget(0, 0, timelineBar);
-//    takeVerticalHeaderItem(0)->setText("Timeline");
+    setVerticalHeaderItem(0, timelineBar->getSideWidget(0));
+    verticalHeader()->setResizeMode(0, QHeaderView::Fixed);
+    connect(this, SIGNAL(itemClicked(QTableWidgetItem *)), timelineBar, SLOT(itemClicked(QTableWidgetItem *)));
+    connect(verticalHeader(), SIGNAL(sectionClicked(int)), timelineBar, SLOT(rowClicked(int)));
+    connect(timelineBar, SIGNAL(setInfoWidget(QWidget *)), this, SLOT(setInfoWidget(QWidget *)));
 
+    // Find start and stop for timerange
     startTime = timestamps.first();
     stopTime = timestamps.last() + 100;
     timelineBar->setTimeRange(startTime, stopTime);
+
 
     int rows = 1;
 
@@ -112,11 +125,13 @@ void Timeline::update()
     resize(size());
 }
 
+int i = 0;
+
 bool Timeline::eventFilter(QObject * object, QEvent * event)
 {
     if (object == this && event->type() == QEvent::Resize) {
         QResizeEvent * resizeEvent = static_cast<QResizeEvent *>(event);
-        qDebug() << resizeEvent->size().width();
+//        qDebug() << resizeEvent->size().width();
 
     }
 
@@ -125,6 +140,15 @@ bool Timeline::eventFilter(QObject * object, QEvent * event)
         timelineBar->setMarker(mouseEvent->x());
     }
 
+    if ((object == viewport()) && event->type() == QEvent::Paint) {
+        QPaintEvent * paintEvent = static_cast<QPaintEvent *>(event);
+        QPainter painter(viewport());
+        painter.fillRect(0, 0, 1000, 100, Qt::yellow);
+
+        qDebug() << "asd";
+    }
+
+    qDebug() << i;
 
     return false;
 }

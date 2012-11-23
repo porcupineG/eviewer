@@ -41,11 +41,13 @@ public:
 
 signals:
     void timeRangeChanged(unsigned long long int startTime, unsigned long long int stopTime);
+    void viewInfoWidget(QWidget * widget);
 
 public slots:
-
     void zoomIn();
     void zoomOut();
+
+    void setInfoWidget(QWidget * widget);
 
 };
 

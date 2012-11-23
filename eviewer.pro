@@ -32,7 +32,9 @@ SOURCES += \
     src/groupfilter.cpp \
     src/sourcerow.cpp \
     src/events.cpp \
-    src/qcustomplot/qcustomplot.cpp
+    src/qcustomplot/qcustomplot.cpp \
+    src/infowidget.cpp \
+    src/row.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -52,7 +54,9 @@ HEADERS += \
     src/groupfilter.h \
     src/sourcerow.h \
     src/events.h \
-    src/qcustomplot/qcustomplot.h
+    src/qcustomplot/qcustomplot.h \
+    src/infowidget.h \
+    src/row.h
 
 RESOURCES += \
     res.qrc

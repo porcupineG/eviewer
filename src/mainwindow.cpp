@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setContextMenuPolicy(Qt::NoContextMenu);
 
-
     toolBar.addAction(&infoDockAction);
     infoDockAction.setCheckable(true);
     connect(&infoDockAction, SIGNAL(toggled(bool)), &infoDock, SLOT(setVisible(bool)));
@@ -50,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     toolBar.addAction(&zoomOutAction);
     connect(&zoomOutAction, SIGNAL(triggered()), &timeline, SLOT(zoomOut()));
+
+
+    connect(&timeline, SIGNAL(viewInfoWidget(QWidget *)), &infoDock, SLOT(viewInfoWidget(QWidget *)));
 
     setCentralWidget(&timeline);
 
