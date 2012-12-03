@@ -36,21 +36,6 @@ void TimelineBar::setTimeRange(unsigned long long int startTime, unsigned long l
     xAxis->setRange(startTime, stopTime);
 }
 
-void TimelineBar::setMarker(unsigned long long marker)
-{
-    QVector<double> x;
-    x.append(marker);
-    QVector<double> y;
-    y.append(10);
-    graph(0)->setData(x, y);
-    replot();
-}
-
-void TimelineBar::itemClicked(QTableWidgetItem * item)
-{
-
-}
-
 void TimelineBar::rowClicked(int row)
 {
     if (this->row == row) {
@@ -75,4 +60,10 @@ QTableWidgetItem * TimelineBar::getSideWidget(int row)
     return sideWidget;
 }
 
+
+void TimelineBar::mousePressEvent(QMouseEvent * event)
+{
+    rowClicked(row);
+    event->accept();
+}
 

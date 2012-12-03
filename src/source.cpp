@@ -22,5 +22,7 @@ QTableWidgetItem * Source::getSideWidget()
 
 QTableWidgetItem * Source::getEventWidget()
 {
-    return new QTableWidgetItem();
+    QTableWidgetItem * item =  new QTableWidgetItem();
+    item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    return item;
 }

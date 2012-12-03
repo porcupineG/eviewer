@@ -1,6 +1,6 @@
 CONFIG += debug
 
-QT += gui
+QT += gui xml
 
 RCC_DIR = ".rcc"
 UI_DIR = ".ui"
@@ -30,11 +30,15 @@ SOURCES += \
     src/metamodel.cpp \
     src/eventscollector.cpp \
     src/groupfilter.cpp \
-    src/sourcerow.cpp \
-    src/events.cpp \
-    src/qcustomplot/qcustomplot.cpp \
+    src/qcustomplot.cpp \
     src/infowidget.cpp \
-    src/row.cpp
+    src/overlay.cpp \
+    src/metamodel/level.cpp \
+    src/metamodel/sublevel.cpp \
+    src/metamodel/logtype.cpp \
+    src/metamodel/logcode.cpp \
+    src/metamodel/id.cpp \
+    src/metamodel/event.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -45,18 +49,22 @@ HEADERS += \
     src/groupfiltersdock.h \
     src/settingsdock.h \
     src/timeline.h \
-    src/graph.h \
     src/source.h \
     src/timelinebar.h \
     src/timeline.h \
     src/metamodel.h \
     src/eventscollector.h \
     src/groupfilter.h \
-    src/sourcerow.h \
-    src/events.h \
-    src/qcustomplot/qcustomplot.h \
+    src/qcustomplot.h \
     src/infowidget.h \
-    src/row.h
+    src/graph.h \
+    src/overlay.h \
+    src/metamodel/level.h \
+    src/metamodel/sublevel.h \
+    src/metamodel/logtype.h \
+    src/metamodel/logcode.h \
+    src/metamodel/id.h \
+    src/metamodel/event.h
 
 RESOURCES += \
     res.qrc

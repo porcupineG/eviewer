@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setCentralWidget(&timeline);
 
-
+    //----------------------------------------
     for (int j = 1; j < 12; j++) {
         Source  * source = new Source();
         for (int i = 0; i < 10; i++) {
@@ -63,6 +63,20 @@ MainWindow::MainWindow(QWidget *parent) :
         }
         timeline.addSource(source);
     }
+
+    for (int j = 1; j < 5; j++) {
+        Graph  * graph = new Graph();
+        QVector<double> x, y;
+        for (int i = 0; i < 1000; i++) {
+            x.append(i);
+            y.append(qSin(i / 100));
+        }
+
+        graph->addData(x, y);
+        timeline.addGraph(graph);
+    }
+
+    timeline.update();
     timeline.update();
 
 }

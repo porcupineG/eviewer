@@ -4,7 +4,7 @@
 #include <QTableWidgetItem>
 
 #include "infowidget.h"
-#include "qcustomplot/qcustomplot.h"
+#include "qcustomplot.h"
 
 class TimelineBar : public QCustomPlot
 {
@@ -17,6 +17,9 @@ private:
     unsigned long long int startTime;
     unsigned long long int stopTime;
 
+protected:
+    void mousePressEvent(QMouseEvent *event);
+
 public:
     explicit TimelineBar(QWidget * parent = 0);
     QTableWidgetItem * getSideWidget(int row);
@@ -26,8 +29,6 @@ signals:
     
 public slots:
     void setTimeRange(unsigned long long int start, unsigned long long int stop);
-    void setMarker(unsigned long long int marker);
-    void itemClicked(QTableWidgetItem * item);
     void rowClicked(int row);
 
 };

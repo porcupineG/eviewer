@@ -6,7 +6,8 @@
 #include <QDebug>
 #include <QLabel>
 #include <QHeaderView>
-#include "qcustomplot/qcustomplot.h"
+#include <QWheelEvent>
+#include "qcustomplot.h"
 
 Timeline::Timeline(QWidget * parent) :
     QTableWidget(parent),
@@ -20,6 +21,10 @@ Timeline::Timeline(QWidget * parent) :
     viewport()->installEventFilter(this);
     installEventFilter(this);
 
+    overlay = new Overlay(viewport());
+
+    horizontalScrollBar()->setTracking(true);
+    connect(horizontalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));
 }
 
 void Timeline::addSource(Source * source)
@@ -38,7 +43,7 @@ void Timeline::addSource(Source * source)
 
 void Timeline::addGraph(Graph * graph)
 {
-
+    graphs.append(graph);
 }
 
 void Timeline::zoomIn()
@@ -48,6 +53,7 @@ void Timeline::zoomIn()
     if (millisecPerPixel > (2 * frac)) {
         millisecPerPixel -= frac;
         update();
+        overlay->raise();
     }
 
 }
@@ -57,11 +63,17 @@ void Timeline::zoomOut()
     double frac = millisecPerPixel / 10.0;
     millisecPerPixel += frac;
     update();
+    overlay->raise();
 }
 
 void Timeline::setInfoWidget(QWidget * widget)
 {
     emit viewInfoWidget(widget);
+}
+
+void Timeline::sliderMoved(int value)
+{
+    qDebug() << value;
 }
 
 void Timeline::update()
@@ -81,17 +93,24 @@ void Timeline::update()
     setCellWidget(0, 0, timelineBar);
     setVerticalHeaderItem(0, timelineBar->getSideWidget(0));
     verticalHeader()->setResizeMode(0, QHeaderView::Fixed);
-    connect(this, SIGNAL(itemClicked(QTableWidgetItem *)), timelineBar, SLOT(itemClicked(QTableWidgetItem *)));
     connect(verticalHeader(), SIGNAL(sectionClicked(int)), timelineBar, SLOT(rowClicked(int)));
     connect(timelineBar, SIGNAL(setInfoWidget(QWidget *)), this, SLOT(setInfoWidget(QWidget *)));
 
     // Find start and stop for timerange
-    startTime = timestamps.first();
-    stopTime = timestamps.last() + 100;
-    timelineBar->setTimeRange(startTime, stopTime);
+    totalStartTime = timestamps.first();
+    totalStopTime = timestamps.last() + 100;
+    timelineBar->setTimeRange(totalStartTime, totalStopTime);
 
 
     int rows = 1;
+
+    for (int i = 0; i < graphs.count(); i++) {
+        setVerticalHeaderItem(rows, graphs[i]->getSideWidget(rows));
+        setSpan(rows, 0, 1, columnCount());
+        setCellWidget(rows, 0, graphs[i]->getWidget());
+        graphs[i]->setTimeRange(totalStartTime, totalStopTime);
+        rows++;
+    }
 
     for (int i = 0; i < sources.count(); i++) {
         setVerticalHeaderItem(rows, sources[i]->getSideWidget());
@@ -125,30 +144,36 @@ void Timeline::update()
     resize(size());
 }
 
-int i = 0;
-
 bool Timeline::eventFilter(QObject * object, QEvent * event)
 {
+
     if (object == this && event->type() == QEvent::Resize) {
         QResizeEvent * resizeEvent = static_cast<QResizeEvent *>(event);
-//        qDebug() << resizeEvent->size().width();
+        overlay->resize(resizeEvent->size());
+        overlay->raise();
 
+        qDebug() << "viewport w" << viewport()->size().width();
+        qDebug() << "viewport h" << viewport()->size().height();
+        qDebug() << "this w" << verticalScrollBar()->pos().x();
+        qDebug() << "this h" << contentsRect().height();
+    }
+
+    if (object == viewport() && event->type() == QEvent::Wheel) {
+        QWheelEvent * wheelEvent = static_cast<QWheelEvent *>(event);
+        if (wheelEvent->delta() > 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
     }
 
     if (object == viewport() && event->type() == QEvent::MouseMove) {
         QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-        timelineBar->setMarker(mouseEvent->x());
+
+        overlay->setMainMarkerPosition(mouseEvent->x());
+        overlay->repaint();
+        overlay->raise();
     }
-
-    if ((object == viewport()) && event->type() == QEvent::Paint) {
-        QPaintEvent * paintEvent = static_cast<QPaintEvent *>(event);
-        QPainter painter(viewport());
-        painter.fillRect(0, 0, 1000, 100, Qt::yellow);
-
-        qDebug() << "asd";
-    }
-
-    qDebug() << i;
 
     return false;
 }

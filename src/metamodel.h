@@ -2,13 +2,43 @@
 #define METAMODEL_H
 
 #include <QObject>
+#include <QMap>
+#include <QDomElement>
+
+#include "metamodel/level.h"
+#include "metamodel/event.h"
 
 class MetaModel : public QObject
 {
     Q_OBJECT
+private:
+    Level cpuAndNetwork;
+    Level runtimeEnvironment;
+    Level process;
+    Level applicationComponent;
+
+    QMap<unsigned int, Event> events;
+
+    bool parseLevel(Level * level, QDomElement * levelElement);
+
 public:
-    explicit MetaModel(QObject *parent = 0);
-    bool setModel(const QString & string);
+    explicit MetaModel(QObject * parent = 0);
+    bool setModel(const QString file);
+    bool parse(const QString fileName);
+
+    void printLevel(Level * level);
+
+    QMap<unsigned int, Event> getEvents();
+    Level getCpuAndNetwork();
+    Level getRuntimeEnvironment();
+    Level getProcess();
+    Level getApplicationComponent();
+
+    bool getIndicator(unsigned int type);
+    unsigned int getPriority(unsigned int type);
+    unsigned int getLogStruct(unsigned int type);
+    unsigned int getLogLevel(unsigned int type);
+    unsigned int getLogType(unsigned int type);
 
 
 

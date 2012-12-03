@@ -11,18 +11,20 @@
 #include "graph.h"
 
 #include "timelinebar.h"
+#include "overlay.h"
 
 class Timeline : public QTableWidget
 {
     Q_OBJECT
 
 private:
-    QList<SourceRow *> sourceRowList;
-    unsigned long long int startTime;
-    unsigned long long int stopTime;
 
     QList<unsigned long long int> timestamps;
     double millisecPerPixel;
+    unsigned long long int totalStartTime;
+    unsigned long long int totalStopTime;
+    unsigned long long int visibleStartTime;
+    unsigned long long int visibleStopTime;
 
     QList<Source *> sources;
     QList<Graph *> graphs;
@@ -30,6 +32,7 @@ private:
     bool eventFilter(QObject * object, QEvent * event);
 
     TimelineBar * timelineBar;
+    Overlay * overlay;
 
 public:
     Timeline(QWidget * parent = 0);
@@ -40,7 +43,9 @@ public:
 
 
 signals:
-    void timeRangeChanged(unsigned long long int startTime, unsigned long long int stopTime);
+    void totalTimeRangeChanged(unsigned long long int totalStartTime, unsigned long long int stopTime);
+    void visibleTimeRangeChanged(unsigned long long int totalStartTime, unsigned long long int stopTime);
+    void mainMarkerPositionChanged(unsigned long long int time);
     void viewInfoWidget(QWidget * widget);
 
 public slots:
@@ -48,7 +53,7 @@ public slots:
     void zoomOut();
 
     void setInfoWidget(QWidget * widget);
-
+    void sliderMoved(int value);
 };
 
 #endif // GRAPHICSVIEW_H
