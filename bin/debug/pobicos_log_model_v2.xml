@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<log_model>
+	<cpu_and_network>
+		<id size="0" ></id>
+		<level>
+			<name>PC and Network</name>
+		</level>
+	</cpu_and_network>
+	<runtime_environment>
+		<id size="8" >PPE_ID</id>
+		<level>
+			<name>POBICOS Proxy Environment</name>
+
+			<log_type name="Portplex status" value="0x1240" indicator="0" priority="1" log_struct="1">
+				<log_code value="0x00000001">E_PORTPLEX_STARTED</log_code>
+				<log_code value="0x00000002">E_PORTPLEX_KILLED</log_code>
+				<log_code value="0x00000003">E_PORTPLEX_PROXY_MANAGER_CONNECTED</log_code>
+				<log_code value="0x00000004">E_PORTPLEX_PROXY_MANAGER_DISCONNECTED</log_code>
+				<log_code value="0x00000005">E_EXTERNAL_PORTPLEX_CONNECTED</log_code>
+				<log_code value="0x00000006">E_CONNECTED_TO_EXTERNAL_PORTPLEX</log_code>
+				<log_code value="0x00000007">E_PORTPLEX_PROXY_CONNECTED</log_code>
+				<log_code value="0x00000008">E_PORTPLEX_PROXY_DISCONNECTED</log_code>
+			</log_type>
+			
+			<log_type name="Portplex error" value="0x1641" indicator="0" priority="3" log_struct="1">
+			</log_type>
+			
+			<log_type name="MUX status" value="0x1242" indicator="0" priority="1" log_struct="1">
+				<log_code value="0x00000001">E_MUX_STARTED</log_code>
+				<log_code value="0x00000002">E_MUX_KILLED</log_code>
+				<log_code value="0x00000003">E_SPN_CONNECTED</log_code>
+				<log_code value="0x00000004">E_SPN_DISCONECTED</log_code>
+				<log_code value="0x00000005">E_PROXY_MANAGER_CONNECTED</log_code>
+				<log_code value="0x00000006">E_PROXY_MANAGER_DISCONNECTED</log_code>
+			</log_type>
+			
+			<log_type name="MUX error" value="0x1643" indicator="0" priority="3" log_struct="1">
+			</log_type>
+			
+			<log_type name="ProxyManager status" value="0x1244" indicator="0" priority="1" log_struct="1">
+			</log_type>
+			
+			<log_type name="ProxyManager error" value="0x1645" indicator="0" priority="3" log_struct="1">
+			</log_type>
+			
+			<log_type name="Portplex performance" value="0x1A46" indicator="1" priority="1" log_struct="1">
+				<log_code value="0x00000001">Transmitted bytes</log_code>
+				<log_code value="0x00000002">Received bytes</log_code>
+				<log_code value="0x00000003">Bytes transmitted to other portplexes </log_code>
+				<log_code value="0x00000004">Bytes received from other portplexes</log_code>
+				<log_code value="0x00000005">CPU usage in microseconds</log_code>
+			</log_type>
+			
+			<log_type name="MUX performance" value="0x1A47" indicator="1" priority="1" log_struct="1">
+				<log_code value="0x00000001">Total transmitted bytes per second</log_code>
+				<log_code value="0x00000002">Total received bytes per second</log_code>
+				<log_code value="0x00000003">CPU usage in microseconds</log_code>
+			</log_type>
+			
+			<log_type name="ProxyManager performance" value="0x1A48" indicator="1" priority="1" log_struct="1">
+			</log_type>
+
+		</level>
+	</runtime_environment>
+	<process>
+		<id size="16" >NODE_ADDR</id>
+		<level>
+			<name>Proxy</name>
+			
+			<log_type name="Proxy status" value="0x2280" indicator="0" priority="1" log_struct="2">
+				<log_code value="0x00000001">PORTPLEX_CONNECTED</log_code>
+				<log_code value="0x00000002">PORTPLEX_DISCONNECTED</log_code>
+				<log_code value="0x00000003">NODE_SHUTDOWN</log_code>
+			</log_type>
+			
+			<log_type name="Proxy performance" value="0x2A81" indicator="1" priority="1" log_struct="2">
+				<log_code value="0x00000001">CPU usage in microseconds</log_code>
+			</log_type>
+			
+		</level>
+		<level>
+			<name>Middleware</name>
+			<log_type name="Middleware status" value="0x22C0" indicator="0" priority="1" log_struct="2">
+				
+			</log_type>
+			<log_type name="Runtime status" value="0x52C1" indicator="0" priority="1" log_struct="5">
+				<log_code value="0x00000001">E_NEW_RUNTIME_CREATED</log_code>
+				<log_code value="0x00000002">E_RUNTIME_REMOVED</log_code>
+				<log_code value="0x00000003">E_CONTEXT_CHANGED</log_code>
+				<log_code value="0x00000004">E_NEW_EVENT_FOR_AGENT</log_code>
+				<log_code value="0x00000005">E_EVENT_MASKED_BY_AGENT</log_code>
+				<log_code value="0x00000006">E_EVENT_IGNORED_AGENT_FINALIZED</log_code>
+				</log_type>
+			
+			<log_type name="Runtime warning" value="0x54C2" indicator="0" priority="2" log_struct="5">
+				<log_code value="0x00000001">E_NO_SPACE_FOR_NEW_RUNTIME</log_code>
+				<log_code value="0x00000002">E_RUNTIME_ALREADY_EXISTING</log_code>
+				<log_code value="0x00000003">E_UNABLE_TO_READ_DATA_SECTION</log_code>
+				<log_code value="0x00000004">E_TRIED_TO_REMOVE_NON_EXISTING_RUNTIME</log_code>
+				<log_code value="0x00000005">E_AGENT_SUSPEND_FAIL</log_code>
+				<log_code value="0x00000006">E_UNABLE_TO_RESUME_AGENT</log_code>
+				<log_code value="0x00000007">E_UNABLE_TO_SAVE_RUNTIME_STATE</log_code>
+				<log_code value="0x00000008">E_UNABLE_TO_RESTORE_RUNTIME_STATE</log_code>
+				<log_code value="0x00000009">E_NO_RUNTIME_STRUCTURES_FOR_AGENT</log_code>
+				<log_code value="0x0000000A">E_CONTEXT_CHANGE_FAIL</log_code>
+				<log_code value="0x0000000B">E_AGENT_FAILED</log_code>
+				<log_code value="0x0000000C">E_EVENT_DELAYED</log_code>
+				<log_code value="0x0000000D">E_VM_DATA_MEMORY_INVALID_ACCESS</log_code>
+				<log_code value="0x0000000E">E_VM_CODE_MEMORY_INVALID_ACCESS</log_code>
+				<log_code value="0x0000000F">E_VM_INVALID_PRIMITIVE_CALLED</log_code>
+				<log_code value="0x00000010">E_FORCED_END_OF_EVENT_HANDLER</log_code>
+				<log_code value="0x00000011">E_INVALID_OPCODE_FOUND</log_code>
+				<log_code value="0x00000012">E_INVALID_PRIMITIVE_CALLED</log_code>
+				<log_code value="0x00000013">E_TOO_LONG_AGENT_EXECUTION</log_code>
+				<log_code value="0x00000014">E_MALFORMED_STACK</log_code>
+				<log_code value="0x00000015">E_INVALID_CODE_MEMORY_ACCESS</log_code>
+				<log_code value="0x00000016">E_INVALID_DATA_MEMORY_ACCESS</log_code>
+				<log_code value="0x00000017">E_VM_IS_BLOCKED</log_code>
+				<log_code value="0x00000018">E_EVENT_NOT_HANDLED_BAD_AID</log_code>
+				<log_code value="0x00000019">E_EVENT_NOT_HANDLED_NO_HANDLER</log_code>
+			</log_type>
+			
+			<log_type name="Runtime error" value="0x56C3" indicator="0" priority="3" log_struct="5">
+			</log_type>
+			
+			<log_type name="Runtime performance" value="0x5AC4" indicator="1" priority="1" log_struct="5">
+				<log_code value="0x00000001" >P_NON_GEN_EVENT_DELAY</log_code>
+				<log_code value="0x00000002" >P_NON_GEN_INSTRUCTION_DELAY</log_code>
+			</log_type>
+			
+			<log_type name="Sub-POBICOS status" value="0x22C5" indicator="0" priority="1" log_struct="2">
+				<log_code value="0x00000001" >E_SPN_REGISTRATION</log_code>
+				<log_code value="0x00000002" >E_SPN_DEREGISTRATION</log_code>
+				<log_code value="0x00000003" >E_NODE_DESCRIPTOR_RECEIVED</log_code>
+			</log_type>
+			
+			<log_type name="Middleware warning" value="0x24C6" indicator="0" priority="2" log_struct="2">
+				<log_code value="0x00000001" >E_DATA_ITEM_REQUEST_ALREADY_PENDING</log_code>
+				<log_code value="0x00000002" >E_DATA_ITEM_RECEIVED_CHUNK_FOR_NON_EXISTING_TRANSACTION</log_code>
+				<log_code value="0x00000003" >E_DATA_ITEM_RECEIVED_DUPLICATE_CHUNK</log_code>
+				<log_code value="0x00000004" >E_DATA_ITEM_NO_RELATED_TRANSACTION_FOR_MSG</log_code>
+				<log_code value="0x00000005" >E_DATA_ITEM_RELIABLE_MESSAGE_FAILED</log_code>
+				<log_code value="0x00000006" >E_DATA_ITEM_UNKNOWN_MESSAGE</log_code>
+				<log_code value="0x00000007" >E_UA_INFO_LOADING_INFO_NO_DATA_ITEM</log_code>
+				<log_code value="0x00000008" >E_UA_INFO_GET_NON_GEN_INSTR_FAIL</log_code>
+				<log_code value="0x00000009" >E_TAXONOMY_INVALID_CONCEPT_RANGE</log_code>
+				<log_code value="0x0000000A" >E_INSTR_FLOW_INVALID_INTERVAL_INSTRUCTION</log_code>
+			</log_type>
+			
+			<log_type name="Middleware error" value="0x26C7" indicator="0" priority="3" log_struct="2">
+			</log_type>
+			
+			<log_type name="Runtime event handler start" value="0x52C8" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			
+			<log_type name="Runtime event handler stop" value="0x52C9" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			
+			<log_type name="Runtime execution task start" value="0x52CA" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			
+			<log_type name="Runtime execution task continue" value="0x52CB" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			
+			<log_type name="Runtime execution task end" value="0x52CC" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			
+			<log_type name="Agent Manager status" value="0x52CD" indicator="0" priority="1" log_struct="5">
+				<log_code value="0x00000001" >E_GENERIC_AGENT_CREATION_REQ</log_code>
+				<log_code value="0x00000002" >E_NON_GENERIC_AGENT_CREATION_REQ</log_code>
+				<log_code value="0x00000003" >E_NEW_GENERIC_AGENT_CREATED</log_code>
+				<log_code value="0x00000004" >E_NEW_NON_GENERIC_AGENT_CREATED</log_code>
+				<log_code value="0x00000005" >E_STOP_AGENT_CREATION</log_code>
+				<log_code value="0x00000006" >E_CHILD_UNREACHABLE</log_code>
+				<log_code value="0x00000007" >E_SEND_RL_MSG</log_code>
+				<log_code value="0x00000008" >E_SEND_UNRL_MSG</log_code>
+				<log_code value="0x00000009" >E_AGENT_CREATION_TIME_OUT</log_code>
+				<log_code value="0x0000000A" >E_RL_COMMAND_ARRIVED</log_code>
+				<log_code value="0x0000000B" >E_UNRL_COMMAND_ARRIVED</log_code>
+				<log_code value="0x0000000C" >E_RL_REPORT_ARRIVED</log_code>
+				<log_code value="0x0000000D" >E_UNRL_REPORT_ARRIVED</log_code>
+				<log_code value="0x0000000E" >E_CONFIG_SETTINGS_CHANGED</log_code>
+				<log_code value="0x0000000F" >E_ROOT_AGENT_CREATED</log_code>
+				<log_code value="0x00000010" >E_HAPPINESS_CHANGED</log_code>
+				<log_code value="0x00000011" >E_ROOT_AGENT_REMOVED</log_code>
+				<log_code value="0x00000012" >E_ROOT_DISCOVERED</log_code>
+			</log_type>
+			
+			<log_type name="Agent Manager warning" value="0x54CE" indicator="0" priority="2" log_struct="5">
+			</log_type>
+			
+			<log_type name="Agent Manager error" value="0x56CF" indicator="0" priority="3" log_struct="5">
+			</log_type>
+			
+			<log_type name="Sub-POBICOS error" value="0x26D0" indicator="0" priority="3" log_struct="2">
+				<log_code value="0x00000001" >E_NODE_DESCRIPTOR_INVALID</log_code>
+				<log_code value="0x00000002" >E_UNKNOWN_RESULT</log_code>
+				<log_code value="0x00000003" >E_SPN_NOT_RESPONDING</log_code>
+				<log_code value="0x00000004" >E_COMMAND_ARGUMENTS_IMAGE_NOT_EXISTING</log_code>
+				<log_code value="0x00000005" >E_UNEXPECTED_SP_COMMUNICATION_STATE</log_code>
+				<log_code value="0x00000006" >E_ASKED_FOR_ARGUMENTS_WITHOUT_COMMAND</log_code>
+				<log_code value="0x00000007" >E_UNSUPORTED_SP_RESULT_TYPE</log_code>
+			</log_type>
+			
+			<log_type name="Sub-POBICOS performance" value="0x2AD1" indicator="1" priority="1" log_struct="2">
+				<log_code value="0x00000001" >P_PING_PONG</log_code>
+			</log_type>
+			
+			<log_type name="Assert" value="0x26D2" indicator="0" priority="3" log_struct="2">
+				<log_code value="0x00000001" >ASSERT_NWKMNGR_JOIN_FAILED</log_code>
+				<log_code value="0x00000002" >ASSERT_CC2480_MSGBUF_FULL</log_code>
+				<log_code value="0x00000003" >ASSERT_COMM_MSGBUF_FULL</log_code>
+				<log_code value="0x00000004" >ASSERT_COMM_FRAGMBUF_FULL</log_code>
+				<log_code value="0x00000005" >ASSERT_COMM_SENDWIN_FULL</log_code>
+				<log_code value="0x00000006" >ASSERT_COMM_RECWIN_FULL</log_code>
+				<log_code value="0x00000007" >ASSERT_COMM_TOO_LARGE_MSG</log_code>
+				<log_code value="0x00000008" >ASSERT_INSP_REQ_MEMCPY_OVER_BOUNDS</log_code>
+				<log_code value="0x00000009" >ASSERT_INSP_RESP_MEMCPY_OVER_BOUNDS</log_code>
+				<log_code value="0x0000000A" >ASSERT_NWKMNGR_MEM_TABLE_FULL</log_code>
+				<log_code value="0x0000001B" >ASSERT_RAMMEM_WRITE_OUT_OF_BOUNDS</log_code>
+				<log_code value="0x0000001C" >ASSERT_RAMMEM_READ_OUT_OF_BOUNDS</log_code>
+				<log_code value="0x0000001D" >ASSERT_OBJECT_SETUP_FAIL</log_code>
+				<log_code value="0x0000001E" >ASSERT_EVENT_QUEUE_OVERFLOW </log_code>
+				<log_code value="0x0000001F" >ASSERT_CONCEPT_ALGEBRA_FAIL</log_code>
+				<log_code value="0x00000020" >ASSERT_QUALIFIER_INVALID </log_code>
+				<log_code value="0x00000021" >ASSERT_QUALIFIER_PROCESSING_ERROR </log_code>
+				<log_code value="0x00000022" >ASSERT_NG_INSTR_NOT_FOUND </log_code>
+				<log_code value="0x00000023" >ASSERT_DATA_ITEM_REMOVE_FAIL </log_code>
+				<log_code value="0x00000024" >ASSERT_DATA_ITEM_PUT_FAIL</log_code>
+				<log_code value="0x00000025" >ASSERT_FLASH_INIT_FAILURE </log_code>
+				<log_code value="0x00000026" >ASSERT_FLASH_WRITE_FAIL </log_code>
+				<log_code value="0x00000027" >ASSERT_FLASH_ERASE_FAIL</log_code>
+				<log_code value="0x00000028" >ASSERT_FLASH_READ_FAIL</log_code>
+				<log_code value="0x00000029" >ASSERT_FLASH_PAGE_WRITE_FAIL </log_code>
+				<log_code value="0x0000002A" >ASSERT_FLASH_PAGE_READ_FAIL </log_code>
+				<log_code value="0x0000002B" >ASSERT_FLASH_ASYNC</log_code>
+				<log_code value="0x0000002C" >ASSERT_DESCRIPTOR_ERROR </log_code>
+				<log_code value="0x0000002D" >ASSERT_UART_MSG_TOO_LONG </log_code>
+				<log_code value="0x0000002E" >ASSERT_UART_TX_FAIL</log_code>
+				<log_code value="0x0000002F" >ASSERT_MEM_SECTION_ID_MISMATCH</log_code>
+				<log_code value="0x00000030" >ASSERT_MEM_SECTION_OUT_OF_RANGE </log_code>
+				<log_code value="0x00000031" >ASSERT_REGISTER_AGENT_FAIL </log_code>
+				<log_code value="0x00000032" >ASSERT_TINYOS_TIMER_USED</log_code>
+				<log_code value="0x00000033" >ASSERT_TRUNCATE_REQUIREMENTS_BUFFER_TOO_SMALL </log_code>
+				<log_code value="0x00000034" >ASSERT_OUT_OF_MEMORY_FOR_EVENTS </log_code>
+				<log_code value="0x00000036" >ASSERT_AGENT_OUT_OF_BOUNDS</log_code>
+				<log_code value="0x00000037" >ASSERT_CHILD_OUT_OF_BOUNDS </log_code>
+				<log_code value="0x00000038" >ASSERT_CREQ_OUT_OF_BOUNDS </log_code>
+				<log_code value="0x00000039" >ASSERT_NODE_OUT_OF_BOUNDS</log_code>
+				<log_code value="0x0000003A" >ASSERT_MSG_OUT_OF_BOUNDS </log_code>
+				<log_code value="0x0000003B" >ASSERT_QUALIFIER_OUT_OF_BOUNDS </log_code>
+				<log_code value="0x0000003C" >ASSERT_REPORT_OUT_OF_BOUNDS </log_code>
+				<log_code value="0x0000003D" >ASSERT_MIGTASK_OUT_OF_BOUNDS </log_code>
+				<log_code value="0x0000003E" >ASSERT_UNRECOGNIZED_BYTE_FLAG </log_code>
+				<log_code value="0x0000003F" >ASSERT_SEND_NACK_MSG_FAILED </log_code>
+				<log_code value="0x00000040" >ASSERT_SEND_PING_MSG_FAILED</log_code>
+				<log_code value="0x00000041" >ASSERT_MIGRATION_FAILED </log_code>
+				<log_code value="0x00000042" >ASSERT_CREQ_FAILED </log_code>
+				<log_code value="0x00000043" >ASSERT_BROADCAST_FAILED </log_code>
+				<log_code value="0x00000044" >ASSERT_AGENT_INDEX_NOT_FOUND </log_code>
+				<log_code value="0x00000045" >ASSERT_AGENT_NOT_FOUND_IN_LIST </log_code>
+				<log_code value="0x00000046" >ASSERT_NODE_ALLOCATED_MEMORY_DEPLETED </log_code>
+				<log_code value="0x00000047" >ASSERT_ROOT_AGENT_CANNOT_BE_CREATED </log_code>
+				<log_code value="0x00000048" >ASSERT_NODE_DESC_NOT_FOUND </log_code>
+				<log_code value="0x00000049" >ASSERT_MIG_FAILED </log_code>
+				<log_code value="0x0000004A" >ASSERT_MIG_DONE </log_code>
+				<log_code value="0x0000004B" >ASSERT_MIG_ACK </log_code>
+				<log_code value="0x0000004C" >ASSERT_REL_MSG_NOT_SENT</log_code>
+				<log_code value="0x0000004D" >ASSERT_MIG_NACK </log_code>
+			</log_type>
+			
+			<log_type name="Sub-POBICOS warning" value="0x24D3" indicator="0" priority="2" log_struct="2">
+				<log_code value="0x00000001" >E_RECEIVED_UNEXPECTED_SPN_PACKET</log_code>
+				<log_code value="0x00000001" >E_RECEIVED_UNEXPECTED_REGISTRATION_PACKET</log_code>
+			</log_type>
+			
+			<log_type name="Agent Manager performance" value="0x5AD4" indicator="1" priority="1" log_struct="5">
+				<log_code value="0x00000001" >P_NG_CREATION</log_code>
+			</log_type>
+			
+			
+		</level>
+		<level>
+			<name>POBICOS API</name>
+			<log_type name="Non-generic event signalled" value="0x5300" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			<log_type name="Generic event signalled" value="0x5301" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			<log_type name="Non-generic instruction called" value="0x5302" indicator="0" priority="1" log_struct="5">
+			</log_type>
+			<log_type name="Generic instruction called" value="0x5303" indicator="0" priority="1" log_struct="5">
+			</log_type>
+		</level>
+	</process>
+	<application_component>
+		<id size="32" >APP_ID</id>
+		<id size="32" >AGENT_ID</id>
+		<id size="32" >AGENT_TYPE</id>
+		<level>
+			<name>Micro-agent</name>
+			<log_type name="PROGRAMMER_DEFINED_EVENT" value="0x5140" indicator="0" priority="0" log_struct="5">
+			</log_type>
+			
+			<log_type name="PROGRAMMER_DEFINED_INDICATOR" value="0x5941" indicator="1" priority="0" log_struct="5">
+			</log_type>
+		</level>
+	</application_component>
+</log_model>

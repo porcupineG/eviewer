@@ -1,4 +1,6 @@
 #include "level.h"
+#include <iostream>
+#include <QDebug>
 
 Level::Level(QString name)
 {
@@ -12,7 +14,7 @@ void Level::insert(SubLevel subLevel)
 
 void Level::insert(Id id)
 {
-    ids.insert(0, id);
+    ids.insert(ids.end(), id);
 }
 
 QList<SubLevel> Level::getSubLevels()
@@ -30,13 +32,17 @@ QString Level::getName()
     return name;
 }
 
-LogType * Level::getLogType(unsigned long long type)
+LogType * Level::getLogType(unsigned int type)
 {
+
     for (int i = 0; i < subLevels.count(); i++) {
 
-        if (*(subLevels[i].getLogTypes().find(type)) == NULL) {
-            qDebug() << "chuj";
+        QMap<unsigned int, LogType> logTypes = subLevels[i].getLogTypes();
+        QMap<unsigned int, LogType>::iterator it = logTypes.find(type);
+        if (it != logTypes.end()) {
+            return &(*it);
         }
+
     }
 
     return 0;

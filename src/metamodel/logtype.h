@@ -8,16 +8,21 @@
 class LogType
 {
 private:
-    QMap<unsigned int, LogCode> logCodes;
     unsigned int value;
-    QString name;
     bool indicator;
     unsigned int priority;
     unsigned int logStruct;
+    unsigned int logLevel;
+    unsigned int logType;
+
+    QMap<unsigned int, LogCode> logCodes;
+    QString name;
 
 public:
     LogType();
-    LogType(unsigned int value, QString name, bool indicator, unsigned int priority, unsigned int logStruct);
+    LogType(unsigned int value, QString name);
+    LogType(unsigned int logStruct, bool indicator, unsigned int priority, unsigned int logLevel, unsigned int logType, QString name);
+
     void insert(LogCode logCode);
 
     QMap<unsigned int, LogCode> getLogCodes();
@@ -26,6 +31,8 @@ public:
     bool getIndicator();
     unsigned int getPriority();
     unsigned int getLogStruct();
+    unsigned int getLogLevel();
+    unsigned int getLogType();
 
 };
 

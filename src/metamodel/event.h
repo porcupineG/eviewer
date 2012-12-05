@@ -3,25 +3,30 @@
 
 #include <QList>
 
-class Event
+#include "id.h"
+#include "logtype.h"
+
+class LogEvent
 {
 private:
-    unsigned int type;
+    LogType type;
     unsigned int length;
     unsigned long long int timestamp;
     unsigned int code;
-    QList<unsigned int> ids;
+    QList<Id> ids;
     float indicator;
 
 public:
-    Event();
+    LogEvent(LogType type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator);
 
-    unsigned int getType();
+    LogType getType();
     unsigned int getLength();
     unsigned long long int getTimestamp();
     unsigned int getCode();
-    QList<unsigned int> getIds();
+    QList<Id> getIds();
     float getIndicator();
+
+    void insertId(Id);
 
 };
 

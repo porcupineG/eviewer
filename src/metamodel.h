@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QList>
 #include <QDomElement>
 
 #include "metamodel/level.h"
@@ -17,8 +18,8 @@ private:
     Level process;
     Level applicationComponent;
 
-    QMap<unsigned int, Event> events;
-
+    QList<Id> ids;
+    QList<LogEvent> events;
     bool parseLevel(Level * level, QDomElement * levelElement);
 
 public:
@@ -28,7 +29,7 @@ public:
 
     void printLevel(Level * level);
 
-    QMap<unsigned int, Event> getEvents();
+    QList<LogEvent> getEvents();
     Level getCpuAndNetwork();
     Level getRuntimeEnvironment();
     Level getProcess();

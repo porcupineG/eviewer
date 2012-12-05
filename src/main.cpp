@@ -8,13 +8,18 @@
 #include "metamodel.h"
 
 
+#include <iostream>
 
 int main(int argc, char * argv[]) {
 
     MetaModel metaModel;
 
-    qDebug() << metaModel.setModel("pobicos_log_model_v1.xml");
-    metaModel.parse("log_file_2012_10_31");
+    qDebug() << "parse model" << metaModel.setModel("pobicos_log_model_v2.xml");
+    qDebug() << "parse data" << metaModel.parse("log_file_2012_10_31");
+
+    for (int i = 0; i < metaModel.getEvents().size(); ++i) {
+//        qDebug() << metaModel.getEvents()[i].getTimestamp();
+    }
 
     //    Level l0 = metaModel.getCpuAndNetwork();
 //    Level l1 = metaModel.getRuntimeEnvironment();

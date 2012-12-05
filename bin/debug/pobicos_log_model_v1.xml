@@ -19,7 +19,7 @@
 			<log_type name="Portplex error" value="0x1641" indicator="0" priority="3" log_struct="1">
 			</log_type>
 			
-                        <log_type name="MUX status" value="c" indicator="0" priority="1" log_struct="1">
+                        <log_type name="MUX status" value="0X1242" indicator="0" priority="1" log_struct="1">
 				<log_code value="0x00000001">MUX_STARTED</log_code>
 				<log_code value="0x00000002">MUX_KILLED</log_code>
 				<log_code value="0x00000003">SPN_CONNECTED</log_code>

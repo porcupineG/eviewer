@@ -22,7 +22,7 @@ MetaModel::MetaModel(QObject * parent) :
 
 bool MetaModel::setModel(const QString file)
 {
-    QDomDocument doc("Model");
+    QDomDocument doc("log_model");
     bool ret = doc.setContent(new QFile(file));
 
     if (ret == false) {
@@ -122,7 +122,7 @@ void MetaModel::printLevel(Level * level)
 
 }
 
-QMap<unsigned int, Event> MetaModel::getEvents()
+QList<LogEvent> MetaModel::getEvents()
 {
     return events;
 }
@@ -189,6 +189,7 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             }
             QString name = element.text();
             level->insert(Id(size, name));
+            ids.insert(ids.end(), Id(size, name));
         }
     }
 
@@ -220,7 +221,7 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             if (ok == false) {
                 return false;
             }
-            unsigned int indicator = logTypeElement.attribute("indicator").toUInt(&ok);
+            bool indicator = (logTypeElement.attribute("indicator").toUInt(&ok) != 0);
             if (ok == false) {
                 return false;
             }
@@ -232,7 +233,19 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             if (ok == false) {
                 return false;
             }
-            LogType logType(value, name, indicator, priority, logStruct);
+
+            LogType logType(value, name);
+
+            if (indicator != logType.getIndicator()) {
+                return false;
+            }
+            if (priority != logType.getPriority()) {
+                return false;
+            }
+            if (logStruct != logType.getLogStruct()) {
+                return false;
+            }
+
             QDomNodeList logCodes = logTypeElement.elementsByTagName("log_code");
 
             for (int k = 0; k < logCodes.count(); k++) {
@@ -261,40 +274,101 @@ bool MetaModel::parse(const QString fileName)
     QFile file(fileName);
     file.open(QFile::ReadOnly);
 
-    unsigned short int type;
-    file.read((char *) &type, 2);
-    type = qFromBigEndian(type);
+    events.clear();
 
-    unsigned char len, lenTmp;
-    file.read((char *) &len, 1);
-    len = qFromBigEndian(len);
-    lenTmp = len;
+    int i = 0;
+    while (file.atEnd() == false) {
 
-    unsigned int timestamp_s;
-    file.read((char *) &timestamp_s, 4);
-    timestamp_s = qFromBigEndian(timestamp_s);
+//        std::cout << i++ << std::endl;
 
-    unsigned short int timestamp_m;
-    file.read((char *) &timestamp_m, 2);
-    timestamp_m = qFromBigEndian(timestamp_m);
+        unsigned short int typeTmp;
+        file.read((char *) &typeTmp, 2);
+        typeTmp = qFromBigEndian(typeTmp);
+        unsigned int type = typeTmp;
 
-    unsigned long long int timestamp = timestamp_s * 1000 + timestamp_m;
+        unsigned char lenTmp;
+        file.read((char *) &lenTmp, 1);
+        lenTmp = qFromBigEndian(lenTmp);
+        unsigned int len = (unsigned int) lenTmp;
 
-    unsigned int code;
-    file.read((char *) &code, 4);
-    code = qFromBigEndian(code);
+        unsigned int timestamp_s;
+        file.read((char *) &timestamp_s, 4);
+        timestamp_s = qFromBigEndian(timestamp_s);
 
-    lenTmp -= 10;
+        unsigned short int timestamp_m;
+        file.read((char *) &timestamp_m, 2);
+        timestamp_m = qFromBigEndian(timestamp_m);
 
-    cpuAndNetwork.getLogType(type);
+        unsigned long long int timestamp = timestamp_s * 1000 + timestamp_m;
 
-    std::cout << (std::hex) << (unsigned int) type << std::endl;
-    std::cout << (std::dec) <<(unsigned int) len << std::endl;
-    std::cout << (std::dec) << timestamp << std::endl;
-    std::cout << (std::hex) << code << std::endl;
+        unsigned int code;
+        file.read((char *) &code, 4);
+        code = qFromBigEndian(code);
 
+        LogType * logType = 0;
 
-//    (*(runtimeEnvironment.getSubLevels()[0].getLogTypes().find(type))).getName();
+        if (logType == 0) {
+            logType = cpuAndNetwork.getLogType(type);
+        }
+        if (logType == 0) {
+            logType = runtimeEnvironment.getLogType(type);
+        }
+        if (logType == 0) {
+            logType = process.getLogType(type);
+        }
+        if (logType == 0) {
+            logType = applicationComponent.getLogType(type);
+        }
+
+        if (logType != 0) {
+//            logType = new LogType(type, "Undefined");
+//        }
+
+        QList<Id> idsTmp;
+        unsigned int lenRead = 0;
+        float indicator = 0;
+        for (int i = 0; i < logType->getLogStruct(); i++) {
+            Id id = ids.at(i);
+
+            char * buffer = new char[id.getSize() / 8];
+            file.read(buffer, id.getSize() / 8);
+            id.parse(buffer);
+            delete buffer;
+
+            lenRead += id.getSize() / 8;
+
+            if (i == 340) {
+                int a = 2;
+            }
+
+            idsTmp.insert(idsTmp.end(), id);
+
+            if (lenRead > (len - 10)) {
+                return false;
+            }
+        }
+
+        if (logType->getIndicator() == true) {
+            if ((len - 10 - lenRead) != 4) {
+                return false;
+            }
+            file.read((char *) &indicator, sizeof(float));
+            lenRead += sizeof(float);
+        }
+
+        LogEvent * ev = new LogEvent(*logType, len, timestamp, code, indicator);
+        for (int i = 0; i < idsTmp.size(); i++) {
+            ev->insertId(idsTmp[i]);
+        }
+        events.insert(events.end(), *ev);
+        delete ev;
+
+        } else {
+            char * buffer = new char[len - 10];
+            file.read(buffer, len - 10);
+            delete buffer;
+        }
+    }
 
     file.close();
 }

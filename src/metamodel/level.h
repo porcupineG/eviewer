@@ -22,7 +22,7 @@ public:
     QList<Id> getIds();
     QString getName();
 
-    LogType * getLogType(unsigned long long int type);
+    LogType * getLogType(unsigned int type);
 };
 
 #endif // LEVEL_H

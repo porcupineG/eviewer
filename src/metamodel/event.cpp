@@ -1,35 +1,45 @@
 #include "event.h"
 
-Event::Event()
+LogEvent::LogEvent(LogType type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator)
 {
+    this->type = type;
+    this->length = length;
+    this->timestamp = timestamp;
+    this->code = code;
+    this->indicator = indicator;
 }
 
-unsigned int Event::getType()
+LogType LogEvent::getType()
 {
     return type;
 }
 
-unsigned int Event::getLength()
+unsigned int LogEvent::getLength()
 {
     return length;
 }
 
-unsigned long long Event::getTimestamp()
+unsigned long long LogEvent::getTimestamp()
 {
     return timestamp;
 }
 
-unsigned int Event::getCode()
+unsigned int LogEvent::getCode()
 {
     return code;
 }
 
-QList<unsigned int> Event::getIds()
+QList<Id> LogEvent::getIds()
 {
     return ids;
 }
 
-float Event::getIndicator()
+float LogEvent::getIndicator()
 {
     return indicator;
+}
+
+void LogEvent::insertId(Id)
+{
+//    ids.insert(Id);
 }
