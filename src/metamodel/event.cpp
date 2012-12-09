@@ -1,6 +1,9 @@
+
 #include "event.h"
 
-LogEvent::LogEvent(LogType type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator)
+#include <QDebug>
+
+LogEvent::LogEvent(LogType * type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator)
 {
     this->type = type;
     this->length = length;
@@ -9,7 +12,7 @@ LogEvent::LogEvent(LogType type, unsigned int length, unsigned int timestamp, un
     this->indicator = indicator;
 }
 
-LogType LogEvent::getType()
+LogType * LogEvent::getType()
 {
     return type;
 }
@@ -29,9 +32,9 @@ unsigned int LogEvent::getCode()
     return code;
 }
 
-QList<Id> LogEvent::getIds()
+QList<Id> * LogEvent::getIds()
 {
-    return ids;
+    return &ids;
 }
 
 float LogEvent::getIndicator()
@@ -39,7 +42,21 @@ float LogEvent::getIndicator()
     return indicator;
 }
 
-void LogEvent::insertId(Id)
+void LogEvent::insertId(Id id)
 {
-//    ids.insert(Id);
+    ids.insert(ids.end(), id);
 }
+
+void LogEvent::print()
+{
+    qDebug() << "---";
+    type->print();
+    qDebug() << "length" << length;
+    qDebug() << "timestamp" << timestamp;
+    qDebug() << "code" << code;
+    for (int i = 0; i < ids.size(); ++i) {
+        qDebug() << "id" << *(ids[i].getName()) << ids[i].getValue() << ids[i].getSize();
+    }
+    qDebug() << "indicator" << indicator;
+}
+

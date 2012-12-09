@@ -10,13 +10,13 @@ void SubLevel::insert(LogType logType)
     logTypes.insert(logType.getValue(), logType);
 }
 
-QMap<unsigned int, LogType> SubLevel::getLogTypes()
+QMap<unsigned int, LogType> * SubLevel::getLogTypes()
 {
-    return logTypes;
+    return &logTypes;
 }
 
 
-QString SubLevel::getName()
+QString * SubLevel::getName()
 {
-    return name;
+    return &name;
 }

@@ -1,6 +1,7 @@
 #include "groupfilter.h"
 
-GroupFilter::GroupFilter(QObject *parent) :
+GroupFilter::GroupFilter(MetaModel * metaModel, QObject *parent) :
     QObject(parent)
 {
+    this->metaModel = metaModel;
 }

@@ -114,6 +114,14 @@ void Timeline::update()
 
     for (int i = 0; i < sources.count(); i++) {
         setVerticalHeaderItem(rows, sources[i]->getSideWidget());
+
+        int s = timestamps.indexOf(sources[i]->geTimestamps()[0]);
+        if (s != 0) {
+            setSpan(rows, 0, 1, s);
+            setItem(rows, 0, sources[i]->getEventWidget());
+            item(rows, 0)->setBackgroundColor(Qt::white);
+        }
+
         for (int j = 0; j < (sources[i]->geTimestamps().count() - 1); j++) {
             int start = timestamps.indexOf(sources[i]->geTimestamps()[j]);
             int stop = timestamps.indexOf(sources[i]->geTimestamps()[j + 1]);
@@ -123,7 +131,7 @@ void Timeline::update()
             }
 
             setItem(rows, start, sources[i]->getEventWidget());
-            item(rows, start)->setBackgroundColor(Qt::red);
+            item(rows, start)->setBackgroundColor((j % 2) == 0 ? Qt::blue : Qt::red);
         }
 
         int start = timestamps.indexOf(sources[i]->geTimestamps().last());
@@ -133,7 +141,7 @@ void Timeline::update()
             setSpan(rows, start, 1, stop - start);
         }
         setItem(rows, start, sources[i]->getEventWidget());
-        item(rows, start)->setBackgroundColor(Qt::green);
+        item(rows, start)->setBackgroundColor((start % 2) == 0 ? Qt::blue : Qt::red);
 
         rows++;
     }
@@ -141,6 +149,7 @@ void Timeline::update()
     for (int i = 1; i < (timestamps.count()); i++) {
         setColumnWidth(i - 1, qRound(((double) timestamps.at(i) - (double) timestamps.at(i - 1)) / millisecPerPixel));
     }
+
     resize(size());
 }
 

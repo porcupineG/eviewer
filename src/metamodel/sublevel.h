@@ -16,8 +16,8 @@ public:
     SubLevel(QString name);
     void insert(LogType logType);
 
-    QMap<unsigned int, LogType> getLogTypes();
-    QString getName();
+    QMap<unsigned int, LogType> * getLogTypes();
+    QString * getName();
 
 };
 

@@ -12,7 +12,7 @@ public:
     LogCode(unsigned int value, QString name);
 
     unsigned int getValue();
-    QString getName();
+    QString * getName();
 };
 
 #endif // LOGCODE_H

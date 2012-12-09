@@ -14,6 +14,7 @@ CONFIG(release, debug|release) {
     DESTDIR = "bin/release"
 }
 
+
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
@@ -28,7 +29,6 @@ SOURCES += \
     src/source.cpp \
     src/timelinebar.cpp \
     src/metamodel.cpp \
-    src/eventscollector.cpp \
     src/groupfilter.cpp \
     src/qcustomplot.cpp \
     src/infowidget.cpp \
@@ -53,7 +53,6 @@ HEADERS += \
     src/timelinebar.h \
     src/timeline.h \
     src/metamodel.h \
-    src/eventscollector.h \
     src/groupfilter.h \
     src/qcustomplot.h \
     src/infowidget.h \

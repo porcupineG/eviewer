@@ -18,9 +18,9 @@ public:
     void insert(SubLevel subLevel);
     void insert(Id id);
 
-    QList<SubLevel> getSubLevels();
-    QList<Id> getIds();
-    QString getName();
+    QList<SubLevel> * getSubLevels();
+    QList<Id> * getIds();
+    QString * getName();
 
     LogType * getLogType(unsigned int type);
 };

@@ -99,52 +99,52 @@ void MetaModel::printLevel(Level * level)
 {
     qDebug() << "Level name=" << level->getName();
 
-    for (int i = 0; i < level->getIds().count(); i++) {
-        qDebug() << " Id: name=" << level->getIds()[i].getName() << " size=" << level->getIds()[i].getSize();
+    for (int i = 0; i < level->getIds()->count(); i++) {
+        qDebug() << " Id: name=" << (*level->getIds())[i].getName() << " size=" << (*level->getIds())[i].getSize();
     }
 
-    for (int i = 0; i < level->getSubLevels().count(); i++) {
-        SubLevel subLevel = level->getSubLevels()[i];
+    for (int i = 0; i < level->getSubLevels()->count(); i++) {
+        SubLevel subLevel = (*level->getSubLevels())[i];
         qDebug() << " SubLevel name=" << subLevel.getName();
-        for (int j = 0; j < subLevel.getLogTypes().count(); ++j) {
-            LogType logType = (*(subLevel.getLogTypes().begin() + j));
+        for (int j = 0; j < subLevel.getLogTypes()->count(); ++j) {
+            LogType logType = (*(subLevel.getLogTypes()->begin() + j));
             qDebug() << "  LogType name=" << logType.getName()
                      << " value=" << logType.getValue()
                      << " indicator=" << logType.getIndicator()
                      << " priority=" << logType.getPriority()
                      << " log_struct=" << logType.getLogStruct();
-            for (int k = 0; k < logType.getLogCodes().count(); ++k) {
-                qDebug() << "   LogCodes name=" << (*(logType.getLogCodes().begin() + k)).getName()
-                         << " value=" << (*(logType.getLogCodes().begin() + k)).getValue();
+            for (int k = 0; k < logType.getLogCodes()->count(); ++k) {
+                qDebug() << "   LogCodes name=" << (*(logType.getLogCodes()->begin() + k)).getName()
+                         << " value=" << (*(logType.getLogCodes()->begin() + k)).getValue();
             }
         }
     }
 
 }
 
-QList<LogEvent> MetaModel::getEvents()
+QList<LogEvent> * MetaModel::getEvents()
 {
-    return events;
+    return &events;
 }
 
-Level MetaModel::getCpuAndNetwork()
+Level * MetaModel::getCpuAndNetwork()
 {
-    return cpuAndNetwork;
+    return &cpuAndNetwork;
 }
 
-Level MetaModel::getRuntimeEnvironment()
+Level * MetaModel::getRuntimeEnvironment()
 {
-    return runtimeEnvironment;
+    return &runtimeEnvironment;
 }
 
-Level MetaModel::getProcess()
+Level * MetaModel::getProcess()
 {
-    return process;
+    return &process;
 }
 
-Level MetaModel::getApplicationComponent()
+Level * MetaModel::getApplicationComponent()
 {
-    return applicationComponent;
+    return &applicationComponent;
 }
 
 bool MetaModel::getIndicator(unsigned int type)
@@ -277,9 +277,11 @@ bool MetaModel::parse(const QString fileName)
     events.clear();
 
     int i = 0;
-    while (file.atEnd() == false) {
+    unsigned int fileSize = file.size();
+    unsigned int fileRead = 0;
+    while ((fileRead + 10) < fileSize) {
+        i++;
 
-//        std::cout << i++ << std::endl;
 
         unsigned short int typeTmp;
         file.read((char *) &typeTmp, 2);
@@ -305,6 +307,8 @@ bool MetaModel::parse(const QString fileName)
         file.read((char *) &code, 4);
         code = qFromBigEndian(code);
 
+        fileRead += 10;
+
         LogType * logType = 0;
 
         if (logType == 0) {
@@ -327,19 +331,16 @@ bool MetaModel::parse(const QString fileName)
         QList<Id> idsTmp;
         unsigned int lenRead = 0;
         float indicator = 0;
-        for (int i = 0; i < logType->getLogStruct(); i++) {
+        for (unsigned int i = 0; i < logType->getLogStruct(); i++) {
             Id id = ids.at(i);
 
             char * buffer = new char[id.getSize() / 8];
             file.read(buffer, id.getSize() / 8);
+            fileRead += id.getSize() / 8;
             id.parse(buffer);
             delete buffer;
 
             lenRead += id.getSize() / 8;
-
-            if (i == 340) {
-                int a = 2;
-            }
 
             idsTmp.insert(idsTmp.end(), id);
 
@@ -353,20 +354,25 @@ bool MetaModel::parse(const QString fileName)
                 return false;
             }
             file.read((char *) &indicator, sizeof(float));
+            fileRead += sizeof(float);
+
             lenRead += sizeof(float);
         }
 
-        LogEvent * ev = new LogEvent(*logType, len, timestamp, code, indicator);
+
+        LogEvent ev(logType, len, timestamp, code, indicator);
         for (int i = 0; i < idsTmp.size(); i++) {
-            ev->insertId(idsTmp[i]);
+            ev.insertId(idsTmp[i]);
         }
-        events.insert(events.end(), *ev);
-        delete ev;
+        events.insert(events.end(), ev);
 
         } else {
-            char * buffer = new char[len - 10];
-            file.read(buffer, len - 10);
-            delete buffer;
+            if (len > 10) {
+                char * buffer = new char[len - 10];
+                file.read(buffer, len - 10);
+                fileRead += len - 10;
+                delete buffer;
+            }
         }
     }
 

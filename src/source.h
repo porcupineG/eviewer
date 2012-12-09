@@ -13,6 +13,7 @@ public:
 
 private:
     QList<unsigned long long int> timestamps;
+    QString name;
 
 public:
 

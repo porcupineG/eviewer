@@ -13,7 +13,7 @@ private:
 
 public:
     Id(unsigned int size, QString name);
-    QString getName();
+    QString * getName();
     unsigned long long int getValue();
     unsigned int getSize();
 

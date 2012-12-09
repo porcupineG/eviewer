@@ -6,9 +6,9 @@ Id::Id(unsigned int size, QString name)
     this->name = name;
 }
 
-QString Id::getName()
+QString * Id::getName()
 {
-    return name;
+    return &name;
 }
 
 unsigned long long Id::getValue()

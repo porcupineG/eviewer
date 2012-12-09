@@ -3,11 +3,17 @@
 
 #include <QObject>
 
+#include "metamodel.h"
+
 class GroupFilter : public QObject
 {
     Q_OBJECT
+
+private:
+    MetaModel * metaModel;
+
 public:
-    explicit GroupFilter(QObject *parent = 0);
+    explicit GroupFilter(MetaModel * metaModel, QObject * parent = 0);
     
 signals:
     

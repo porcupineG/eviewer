@@ -11,7 +11,7 @@ unsigned int LogCode::getValue()
     return value;
 }
 
-QString LogCode::getName()
+QString * LogCode::getName()
 {
-    return name;
+    return &name;
 }

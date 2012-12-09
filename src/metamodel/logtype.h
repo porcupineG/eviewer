@@ -25,15 +25,16 @@ public:
 
     void insert(LogCode logCode);
 
-    QMap<unsigned int, LogCode> getLogCodes();
+    QMap<unsigned int, LogCode> * getLogCodes();
     unsigned int getValue();
-    QString getName();
+    QString * getName();
     bool getIndicator();
     unsigned int getPriority();
     unsigned int getLogStruct();
     unsigned int getLogLevel();
     unsigned int getLogType();
 
+    void print();
 };
 
 #endif // LOGTYPE_H

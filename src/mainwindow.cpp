@@ -2,6 +2,8 @@
 
 #include "source.h"
 
+#include "metamodel.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
 
@@ -55,26 +57,54 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setCentralWidget(&timeline);
 
+
+
+
     //----------------------------------------
-    for (int j = 1; j < 12; j++) {
+
+
+    MetaModel metaModel;
+
+    qDebug() << "parse model" << metaModel.setModel("pobicos_log_model_v2.xml");
+    qDebug() << "parse data" << metaModel.parse("log_file_2012_10_31");
+
+    QSet<unsigned int> types;
+
+    for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
+       types.insert((*metaModel.getEvents())[i].getType()->getValue());
+    }
+
+    foreach (unsigned int v, types) {
         Source  * source = new Source();
-        for (int i = 0; i < 10; i++) {
-            source->addTimestamp(i * i * j);
+
+        for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
+            if ((*metaModel.getEvents())[i].getType()->getValue() == v) {
+                source->addTimestamp((*metaModel.getEvents())[i].getTimestamp());
+            }
         }
+
         timeline.addSource(source);
     }
 
-    for (int j = 1; j < 5; j++) {
-        Graph  * graph = new Graph();
-        QVector<double> x, y;
-        for (int i = 0; i < 1000; i++) {
-            x.append(i);
-            y.append(qSin(i / 100));
-        }
+//    for (int j = 1; j < 12; j++) {
+//        Source  * source = new Source();
+//        for (int i = 0; i < 10; i++) {
+//            source->addTimestamp(i * i * j);
+//        }
+//        timeline.addSource(source);
+//    }
 
-        graph->addData(x, y);
-        timeline.addGraph(graph);
-    }
+//    for (int j = 1; j < 5; j++) {
+//        Graph  * graph = new Graph();
+//        QVector<double> x, y;
+//        for (int i = 0; i < 1000; i++) {
+//            x.append(i);
+//            y.append(qSin(i / 100));
+//        }
+
+//        graph->addData(x, y);
+//        timeline.addGraph(graph);
+//    }
 
     timeline.update();
     timeline.update();

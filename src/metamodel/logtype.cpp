@@ -1,5 +1,7 @@
 #include "logtype.h"
 
+#include <QDebug>
+
 LogType::LogType()
 {
 }
@@ -7,15 +9,13 @@ LogType::LogType()
 LogType::LogType(unsigned int value, QString name)
 {
     this->value = value;
-    this->name = name;
+    this->name = QString(name);
 
     this->logStruct = (value & 0xf000) >> 12;
     this->indicator = ((value & 0x800) != 0);
     this->priority =  (value & 0x600) >> 9;
     this->logLevel =  (value & 0x1c0) >> 6;
     this->logType =  (value & 0x3f);
-
-
 }
 
 LogType::LogType(unsigned int logStruct, bool indicator, unsigned int priority, unsigned int logLevel, unsigned int logType, QString name)
@@ -37,12 +37,13 @@ LogType::LogType(unsigned int logStruct, bool indicator, unsigned int priority, 
     value += (unsigned int) (this->logLevel << 6);
     value += (unsigned int) (this->logType);
 
-    this->name = name;
+    this->name = QString(name);
+
 }
 
-QMap<unsigned int, LogCode> LogType::getLogCodes()
+QMap<unsigned int, LogCode> * LogType::getLogCodes()
 {
-    return logCodes;
+    return &logCodes;
 }
 
 unsigned int LogType::getValue()
@@ -50,9 +51,10 @@ unsigned int LogType::getValue()
     return value;
 }
 
-QString LogType::getName()
+QString * LogType::getName()
 {
-    return name;
+
+    return &name;
 }
 
 bool LogType::getIndicator()
@@ -78,6 +80,17 @@ unsigned int LogType::getLogLevel()
 unsigned int LogType::getLogType()
 {
     return logType;
+}
+
+void LogType::print()
+{
+    qDebug() << "value" << value;
+    qDebug() << "indicator" << indicator;
+    qDebug() << "priority" << priority;
+    qDebug() << "logStruct" << logStruct;
+    qDebug() << "logLevel" << logLevel;
+    qDebug() << "logType" << logType;
+    qDebug() << "name" << name;
 }
 
 void LogType::insert(LogCode logCode)

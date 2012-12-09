@@ -1,5 +1,5 @@
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef ASEVENT_H
+#define ASEVENT_H
 
 #include <QList>
 
@@ -9,7 +9,7 @@
 class LogEvent
 {
 private:
-    LogType type;
+    LogType * type;
     unsigned int length;
     unsigned long long int timestamp;
     unsigned int code;
@@ -17,17 +17,18 @@ private:
     float indicator;
 
 public:
-    LogEvent(LogType type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator);
+    LogEvent(LogType * type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator);
 
-    LogType getType();
+    LogType * getType();
     unsigned int getLength();
     unsigned long long int getTimestamp();
     unsigned int getCode();
-    QList<Id> getIds();
+    QList<Id> * getIds();
     float getIndicator();
 
     void insertId(Id);
 
+    void print();
 };
 
-#endif // EVENT_H
+#endif // ASEVENT_H

@@ -2,7 +2,6 @@
 #define METAMODEL_H
 
 #include <QObject>
-#include <QMap>
 #include <QList>
 #include <QDomElement>
 
@@ -29,11 +28,11 @@ public:
 
     void printLevel(Level * level);
 
-    QList<LogEvent> getEvents();
-    Level getCpuAndNetwork();
-    Level getRuntimeEnvironment();
-    Level getProcess();
-    Level getApplicationComponent();
+    QList<LogEvent> * getEvents();
+    Level * getCpuAndNetwork();
+    Level * getRuntimeEnvironment();
+    Level * getProcess();
+    Level * getApplicationComponent();
 
     bool getIndicator(unsigned int type);
     unsigned int getPriority(unsigned int type);
