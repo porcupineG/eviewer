@@ -27,7 +27,6 @@ SOURCES += \
     src/timeline.cpp \
     src/graph.cpp \
     src/source.cpp \
-    src/timelinebar.cpp \
     src/metamodel.cpp \
     src/groupfilter.cpp \
     src/qcustomplot.cpp \
@@ -38,7 +37,8 @@ SOURCES += \
     src/metamodel/logtype.cpp \
     src/metamodel/logcode.cpp \
     src/metamodel/id.cpp \
-    src/metamodel/event.cpp
+    src/metamodel/event.cpp \
+    src/row.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -50,7 +50,6 @@ HEADERS += \
     src/settingsdock.h \
     src/timeline.h \
     src/source.h \
-    src/timelinebar.h \
     src/timeline.h \
     src/metamodel.h \
     src/groupfilter.h \
@@ -63,7 +62,8 @@ HEADERS += \
     src/metamodel/logtype.h \
     src/metamodel/logcode.h \
     src/metamodel/id.h \
-    src/metamodel/event.h
+    src/metamodel/event.h \
+    src/row.h
 
 RESOURCES += \
     res.qrc

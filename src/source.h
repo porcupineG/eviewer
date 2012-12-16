@@ -1,28 +1,27 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 
-#include <QObject>
-#include <QTableWidgetItem>
+#include <QMultiMap>
 
-class Source : public QObject
+#include "row.h"
+#include "metamodel/event.h"
+
+class Source : public Row
 {
 
-    Q_OBJECT
-
-public:
-
 private:
-    QList<unsigned long long int> timestamps;
-    QString name;
+    QMultiMap<unsigned long long int, LogEvent *> events;
+    LogEvent * findEvent(int x);
+    LogEvent * findEvent(unsigned long long int ts);
+
+protected:
+    virtual QWidget * getSideWidgetBase();
+    virtual void mousePressed(int x, int y);
+    virtual void paint(QRect rect);
 
 public:
-
-    explicit Source(QObject * parent = 0);
-    void addTimestamp(unsigned long long int timestamp);
-
-    QList<unsigned long long int> geTimestamps();
-    QTableWidgetItem * getSideWidget();
-    QTableWidgetItem * getEventWidget();
+    explicit Source(QWidget *parent = 0);
+    void addLogEvent(LogEvent * logEvent);
 
 signals:
     

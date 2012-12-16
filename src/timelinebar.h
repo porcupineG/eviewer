@@ -3,19 +3,12 @@
 
 #include <QTableWidgetItem>
 
-#include "infowidget.h"
 #include "qcustomplot.h"
+#include "row.h"
 
-class TimelineBar : public QCustomPlot
+class TimelineBar : public Row, public QCustomPlot
 {
     Q_OBJECT
-
-private:
-    InfoWidget * infoWidget;
-    QTableWidgetItem * sideWidget;
-    int row;
-    unsigned long long int startTime;
-    unsigned long long int stopTime;
 
 protected:
     void mousePressEvent(QMouseEvent *event);

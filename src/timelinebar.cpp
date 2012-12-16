@@ -32,7 +32,7 @@ TimelineBar::TimelineBar(QWidget *parent) :
 void TimelineBar::setTimeRange(unsigned long long int startTime, unsigned long long int stopTime)
 {
     this->startTime = startTime;
-    this->stopTime = stopTime;
+    this->globalStopTime = stopTime;
     xAxis->setRange(startTime, stopTime);
 }
 
@@ -43,7 +43,7 @@ void TimelineBar::rowClicked(int row)
         infoWidget->setTopLevelName("Timeline");
         infoWidget->addLevel("Total range");
         infoWidget->addSublevel("Total range", "start", QVariant(startTime), "ms");
-        infoWidget->addSublevel("Total range", "stop", QVariant(stopTime), "ms");
+        infoWidget->addSublevel("Total range", "stop", QVariant(globalStopTime), "ms");
 
         emit setInfoWidget(infoWidget);
     }

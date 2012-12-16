@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     MetaModel metaModel;
 
     qDebug() << "parse model" << metaModel.setModel("pobicos_log_model_v2.xml");
-    qDebug() << "parse data" << metaModel.parse("log_file_2012_10_31");
+    qDebug() << "parse data" << metaModel.parse("log_file_2012_12_07");
 
     QSet<unsigned int> types;
 
@@ -79,12 +79,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
         for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
             if ((*metaModel.getEvents())[i].getType()->getValue() == v) {
-                source->addTimestamp((*metaModel.getEvents())[i].getTimestamp());
+                source->addLogEvent(&(*metaModel.getEvents())[i]);
             }
         }
 
         timeline.addSource(source);
     }
+
+    timeline.update();
 
 //    for (int j = 1; j < 12; j++) {
 //        Source  * source = new Source();
@@ -106,8 +108,6 @@ MainWindow::MainWindow(QWidget *parent) :
 //        timeline.addGraph(graph);
 //    }
 
-    timeline.update();
-    timeline.update();
 
 }
 

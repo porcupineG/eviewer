@@ -20,9 +20,13 @@ class Timeline : public QTableWidget
 private:
 
     QList<unsigned long long int> timestamps;
+    QMap<unsigned long long int, unsigned long long int> timestampsMap;
+
     double millisecPerPixel;
-    unsigned long long int totalStartTime;
-    unsigned long long int totalStopTime;
+
+    unsigned long long int globalStartTime;
+    unsigned long long int globalStopTime;
+
     unsigned long long int visibleStartTime;
     unsigned long long int visibleStopTime;
 
@@ -40,11 +44,12 @@ public:
     void addSource(Source * source);
     void addGraph(Graph * graph);
     void update();
+    void sizeUpdate();
 
 
 signals:
-    void totalTimeRangeChanged(unsigned long long int totalStartTime, unsigned long long int stopTime);
-    void visibleTimeRangeChanged(unsigned long long int totalStartTime, unsigned long long int stopTime);
+    void totalTimeRangeChanged(unsigned long long int globalStartTime, unsigned long long int stopTime);
+    void visibleTimeRangeChanged(unsigned long long int globalStartTime, unsigned long long int stopTime);
     void mainMarkerPositionChanged(unsigned long long int time);
     void viewInfoWidget(QWidget * widget);
 
