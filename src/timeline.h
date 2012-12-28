@@ -1,7 +1,7 @@
 #ifndef GRAPHICSVIEW_H
 #define GRAPHICSVIEW_H
 
-#include <QTableWidget>
+#include <QTreeWidget>
 #include <QGridLayout>
 #include <QList>
 #include <QSet>
@@ -13,7 +13,9 @@
 #include "timelinebar.h"
 #include "overlay.h"
 
-class Timeline : public QTableWidget
+#include "metamodel.h"
+
+class Timeline : public QTreeWidget
 {
     Q_OBJECT
 
@@ -38,11 +40,16 @@ private:
     TimelineBar * timelineBar;
     Overlay * overlay;
 
+    MetaModel * metamodel;
+
 public:
     Timeline(QWidget * parent = 0);
 
     void addSource(Source * source);
     void addGraph(Graph * graph);
+
+    void setMetamodel(MetaModel * metamodel);
+
     void update();
     void sizeUpdate();
 

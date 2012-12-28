@@ -10,13 +10,13 @@ class SubLevel
 {
 private:
     QString name;
-    QMap<unsigned int, LogType> logTypes;
+    QMap<unsigned int, LogType *> logTypes;
 
 public:
     SubLevel(QString name);
-    void insert(LogType logType);
+    void insert(LogType * logType);
 
-    QMap<unsigned int, LogType> * getLogTypes();
+    QMap<unsigned int, LogType *> * getLogTypes();
     QString * getName();
 
 };

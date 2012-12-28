@@ -13,6 +13,7 @@ class Overlay : public QWidget
 private:
     QMutex mutex;
     int mainMarkerPosition;
+    int offset;
 
     void drawMainMarker(QPainter * painter);
 

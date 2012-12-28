@@ -13,6 +13,7 @@ private:
     QMultiMap<unsigned long long int, LogEvent *> events;
     LogEvent * findEvent(int x);
     LogEvent * findEvent(unsigned long long int ts);
+    QString name;
 
 protected:
     virtual QWidget * getSideWidgetBase();
@@ -22,6 +23,9 @@ protected:
 public:
     explicit Source(QWidget *parent = 0);
     void addLogEvent(LogEvent * logEvent);
+
+    void setName(QString name);
+    QString * getName();
 
 signals:
     

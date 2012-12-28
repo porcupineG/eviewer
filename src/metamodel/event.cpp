@@ -32,7 +32,7 @@ unsigned int LogEvent::getCode()
     return code;
 }
 
-QList<Id> * LogEvent::getIds()
+QList<Id *> * LogEvent::getIds()
 {
     return &ids;
 }
@@ -42,7 +42,7 @@ float LogEvent::getIndicator()
     return indicator;
 }
 
-void LogEvent::insertId(Id id)
+void LogEvent::insertId(Id * id)
 {
     ids.insert(ids.end(), id);
 }
@@ -55,7 +55,7 @@ void LogEvent::print()
     qDebug() << "timestamp" << timestamp;
     qDebug() << "code" << code;
     for (int i = 0; i < ids.size(); ++i) {
-        qDebug() << "id" << *(ids[i].getName()) << ids[i].getValue() << ids[i].getSize();
+        qDebug() << "id" << *(ids[i]->getName()) << ids[i]->getValue() << ids[i]->getSize();
     }
     qDebug() << "indicator" << indicator;
 }

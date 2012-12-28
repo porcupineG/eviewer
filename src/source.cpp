@@ -23,6 +23,17 @@ void Source::addLogEvent(LogEvent * logEvent)
         startTime = logEvent->getTimestamp();
     }
 
+    resize(100, 30);
+}
+
+void Source::setName(QString name)
+{
+    this->name = name;
+}
+
+QString * Source::getName()
+{
+    return &name;
 }
 
 LogEvent * Source::findEvent(int x)
@@ -80,9 +91,9 @@ void Source::mousePressed(int x, int y)
     InfoWidget * infoWidget = new InfoWidget();
     infoWidget->setTopLevelName("Event");
     infoWidget->addLevel("LogType");
-//    infoWidget->addSublevel("LogType", "Name", QVariant(*(*it)->getType()->getName()), "");
+    infoWidget->addSublevel("LogType", "Name", QVariant(event->getType()->getName()->toStdString().c_str()), "");
 //    infoWidget->addSublevel("LogType", "Value", QVariant(QString::number(event->getType()->getValue(), 16)), "ms");
-    infoWidget->addSublevel("LogType", "Timestamp", QVariant(event->getCode()), "ms");
+    infoWidget->addSublevel("LogType", "Timestamp", QVariant(event->getTimestamp()), "ms");
 
     emit setInfoWidget(infoWidget);
 }
@@ -157,5 +168,12 @@ void Source::paint(QRect rect)
             color++;
         }
     }
+
+//    qDebug() << "---";
+//    qDebug() << it.key();
+//    qDebug() << xR;
+//    qDebug() << wR;
+//    qDebug() << color;
+//    qDebug() << "---";
 
 }

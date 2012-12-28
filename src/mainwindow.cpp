@@ -4,7 +4,8 @@
 
 #include "metamodel.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::
+MainWindow(QWidget *parent) :
     QMainWindow(parent),
 
     infoDock(tr("Information")),
@@ -58,33 +59,43 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(&timeline);
 
 
-
-
     //----------------------------------------
 
 
-    MetaModel metaModel;
-
     qDebug() << "parse model" << metaModel.setModel("pobicos_log_model_v2.xml");
-    qDebug() << "parse data" << metaModel.parse("log_file_2012_12_07");
+    qDebug() << "parse data" << metaModel.parse("log_file_2012_10_31");
 
-    QSet<unsigned int> types;
 
+
+    Source  * cpuAndNetwork = new Source();
     for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
-       types.insert((*metaModel.getEvents())[i].getType()->getValue());
+        cpuAndNetwork->addLogEvent((*metaModel.getEvents())[i]);
+        cpuAndNetwork->setName("Cpu And Network");
     }
+    timeline.addSource(cpuAndNetwork);
 
-    foreach (unsigned int v, types) {
-        Source  * source = new Source();
-
-        for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
-            if ((*metaModel.getEvents())[i].getType()->getValue() == v) {
-                source->addLogEvent(&(*metaModel.getEvents())[i]);
-            }
-        }
-
-        timeline.addSource(source);
+    Source  * runtimeEnvironment = new Source();
+    for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
+        runtimeEnvironment->addLogEvent((*metaModel.getEvents())[i]);
+        runtimeEnvironment->setName("Runtime environment");
     }
+    timeline.addSource(runtimeEnvironment);
+
+    Source  * process = new Source();
+    for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
+        process->addLogEvent((*metaModel.getEvents())[i]);
+        process->setName("Process");
+    }
+    timeline.addSource(process);
+
+    Source  * applicationComponent = new Source();
+    for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
+        applicationComponent->addLogEvent((*metaModel.getEvents())[i]);
+        applicationComponent->setName("Application Component");
+    }
+    timeline.addSource(applicationComponent);
+
+
 
     timeline.update();
 

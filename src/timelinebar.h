@@ -6,23 +6,20 @@
 #include "qcustomplot.h"
 #include "row.h"
 
-class TimelineBar : public Row, public QCustomPlot
+class TimelineBar : public Row
 {
     Q_OBJECT
 
+private:
+    QCustomPlot plot;
+
 protected:
-    void mousePressEvent(QMouseEvent *event);
+    virtual QWidget * getSideWidgetBase();
+    virtual void mousePressed(int x, int y);
+    virtual void paint(QRect rect);
 
 public:
     explicit TimelineBar(QWidget * parent = 0);
-    QTableWidgetItem * getSideWidget(int row);
-
-signals:
-    void setInfoWidget(QWidget * widget);
-    
-public slots:
-    void setTimeRange(unsigned long long int start, unsigned long long int stop);
-    void rowClicked(int row);
 
 };
 

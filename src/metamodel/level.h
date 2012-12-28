@@ -9,17 +9,17 @@
 class Level
 {
 private:
-    QList<SubLevel> subLevels;
-    QList<Id> ids;
+    QList<SubLevel *> subLevels;
+    QList<Id *> ids;
     QString name;
 
 public:
     Level(QString name);
-    void insert(SubLevel subLevel);
-    void insert(Id id);
+    void insert(SubLevel * subLevel);
+    void insert(Id * id);
 
-    QList<SubLevel> * getSubLevels();
-    QList<Id> * getIds();
+    QList<SubLevel *> * getSubLevels();
+    QList<Id *> * getIds();
     QString * getName();
 
     LogType * getLogType(unsigned int type);

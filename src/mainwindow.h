@@ -32,6 +32,11 @@ private:
     QAction zoomInAction;
     QAction zoomOutAction;
 
+    /* --- */
+    MetaModel metaModel;
+    /* --- */
+
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     

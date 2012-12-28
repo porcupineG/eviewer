@@ -17,8 +17,8 @@ private:
     Level process;
     Level applicationComponent;
 
-    QList<Id> ids;
-    QList<LogEvent> events;
+    QList<Id *> ids;
+    QList<LogEvent *> events;
     bool parseLevel(Level * level, QDomElement * levelElement);
 
 public:
@@ -28,7 +28,7 @@ public:
 
     void printLevel(Level * level);
 
-    QList<LogEvent> * getEvents();
+    QList<LogEvent *> * getEvents();
     Level * getCpuAndNetwork();
     Level * getRuntimeEnvironment();
     Level * getProcess();

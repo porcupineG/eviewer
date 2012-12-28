@@ -38,7 +38,8 @@ SOURCES += \
     src/metamodel/logcode.cpp \
     src/metamodel/id.cpp \
     src/metamodel/event.cpp \
-    src/row.cpp
+    src/row.cpp \
+    src/timelinebar.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -63,7 +64,8 @@ HEADERS += \
     src/metamodel/logcode.h \
     src/metamodel/id.h \
     src/metamodel/event.h \
-    src/row.h
+    src/row.h \
+    src/timelinebar.h
 
 RESOURCES += \
     res.qrc

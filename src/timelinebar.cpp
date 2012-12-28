@@ -3,67 +3,52 @@
 
 #include <QDebug>
 
-TimelineBar::TimelineBar(QWidget *parent) :
-    QCustomPlot(parent)
+TimelineBar::TimelineBar(QWidget * parent) :
+    Row(parent),
+    plot(parent)
 {
-    addGraph();
-    xAxis->setVisible(true);
-    xAxis->setTickLabels(true);
-    yAxis->setVisible(false);
-    yAxis->setTickLabels(false);
-    xAxis2->setVisible(false);
-    xAxis2->setTickLabels(false);
-    yAxis2->setVisible(false);
-    yAxis2->setTickLabels(false);
-    yAxis->setPadding(0);
-    xAxis->setLabelPadding(0);
-    xAxis->setAutoTickStep(true);
-    xAxis->setAutoTicks(true);
-    xAxis->setAutoTickCount(10);
+    plot.addGraph();
+    plot.xAxis->setVisible(true);
+    plot.xAxis->setTickLabels(true);
+    plot.yAxis->setVisible(false);
+    plot.yAxis->setTickLabels(false);
+    plot.xAxis2->setVisible(false);
+    plot.xAxis2->setTickLabels(false);
+    plot.yAxis2->setVisible(false);
+    plot.yAxis2->setTickLabels(false);
+    plot.yAxis->setPadding(0);
+    plot.xAxis->setLabelPadding(0);
+    plot.xAxis->setAutoTickStep(true);
+    plot.xAxis->setAutoTicks(true);
+    plot.xAxis->setAutoTickCount(10);
 
-    yAxis->setRange(0, 10);
-    graph(0)->rescaleAxes(true);
-    graph(0)->setLineStyle(QCPGraph::lsImpulse);
-    graph(0)->setPen(QPen(QBrush(Qt::red), 3));
-    setAutoMargin(false);
-    setMargin(0, 0, 20, 20);
+    plot.yAxis->setRange(0, 10);
+    plot.graph(0)->rescaleAxes(true);
+    plot.graph(0)->setLineStyle(QCPGraph::lsImpulse);
+    plot.graph(0)->setPen(QPen(QBrush(Qt::red), 3));
+    plot.setAutoMargin(false);
+    plot.setMargin(0, 0, 20, 20);
 }
 
-void TimelineBar::setTimeRange(unsigned long long int startTime, unsigned long long int stopTime)
+void TimelineBar::paint(QRect rect)
 {
-    this->startTime = startTime;
-    this->globalStopTime = stopTime;
-    xAxis->setRange(startTime, stopTime);
-}
 
-void TimelineBar::rowClicked(int row)
-{
-    if (this->row == row) {
-        infoWidget = new InfoWidget();
-        infoWidget->setTopLevelName("Timeline");
-        infoWidget->addLevel("Total range");
-        infoWidget->addSublevel("Total range", "start", QVariant(startTime), "ms");
-        infoWidget->addSublevel("Total range", "stop", QVariant(globalStopTime), "ms");
-
-        emit setInfoWidget(infoWidget);
-    }
-}
-
-QTableWidgetItem * TimelineBar::getSideWidget(int row)
-{
-    this->row = row;
-    sideWidget = new QTableWidgetItem();
-    sideWidget->setText("Timeline");
-    sideWidget->setTextAlignment(Qt::AlignCenter);
-    sideWidget->setFlags(Qt::NoItemFlags);
-    sideWidget->setSizeHint(QSize(100, 30));
-    return sideWidget;
 }
 
 
-void TimelineBar::mousePressEvent(QMouseEvent * event)
+void TimelineBar::mousePressed(int x, int y)
 {
-    rowClicked(row);
-    event->accept();
+    InfoWidget * infoWidget = new InfoWidget();
+    infoWidget->setTopLevelName("Timeline");
+    infoWidget->addLevel("Total range");
+    infoWidget->addSublevel("Total range", "start", QVariant(startTime), "ms");
+    infoWidget->addSublevel("Total range", "stop", QVariant(globalStopTime), "ms");
+
+    emit setInfoWidget(infoWidget);
 }
 
+
+QWidget * TimelineBar::getSideWidgetBase()
+{
+    return 0;
+}

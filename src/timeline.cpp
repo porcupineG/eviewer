@@ -10,18 +10,19 @@
 #include "qcustomplot.h"
 
 Timeline::Timeline(QWidget * parent) :
-    QTableWidget(parent),
+    QTreeWidget(parent),
     millisecPerPixel(1.0)
 {
+    header()->hide();
 
-    horizontalHeader()->setResizeMode(QHeaderView::Fixed);
-    horizontalHeader()->hide();
+    //horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+    //horizontalHeader()->hide();
 
     viewport()->setMouseTracking(true);
     viewport()->installEventFilter(this);
     installEventFilter(this);
 
-    overlay = new Overlay(viewport());
+    overlay = new Overlay(this);
 
     horizontalScrollBar()->setTracking(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -53,7 +54,13 @@ void Timeline::addSource(Source * source)
 
 void Timeline::addGraph(Graph * graph)
 {
-//    graphs.append(graph);
+    //    graphs.append(graph);
+}
+
+void Timeline::setMetamodel(MetaModel *metamodel)
+{
+    this->metamodel = metamodel;
+
 }
 
 void Timeline::zoomIn()
@@ -88,29 +95,43 @@ void Timeline::sliderMoved(int value)
 
 void Timeline::sizeUpdate() {
     int w = qRound((globalStopTime - globalStartTime) / millisecPerPixel);
-    setColumnWidth(0, w);
+    setColumnWidth(1, w);
 }
 
 void Timeline::update()
 {
     clear();
-    clearContents();
+    //clearContents();
 
-    setRowCount(sources.count());
-    setColumnCount(1);
+    //setRowCount(sources.count());
+
+    setColumnCount(2);
+
+    QTreeWidgetItem * topLevel = new QTreeWidgetItem();
+    topLevel->setText(0, "Timeline");
+    insertTopLevelItem(0, topLevel);
+    setItemWidget(topLevel, 1, new TimelineBar());
+    setItemExpanded(topLevel, true);
 
     int row = 0;
     foreach (Source * source, sources) {
-        setCellWidget(row, 0, source);
+        QTreeWidgetItem * child = new QTreeWidgetItem();
+        child->setText(0, *source->getName());
+        child->setSizeHint(1, QSize(100, 30));
+        topLevel->addChild(child);
+        setItemWidget(child, 1, source);
+        setItemExpanded(child, true);
         row++;
     }
+
+    resizeColumnToContents(0);
 
 }
 
 bool Timeline::eventFilter(QObject * object, QEvent * event)
 {
 
-    if (object == this && event->type() == QEvent::Resize) {
+    if (object == viewport() && event->type() == QEvent::Resize) {
         QResizeEvent * resizeEvent = static_cast<QResizeEvent *>(event);
         overlay->resize(resizeEvent->size());
         overlay->raise();
@@ -127,6 +148,7 @@ bool Timeline::eventFilter(QObject * object, QEvent * event)
 
     if (object == viewport() && event->type() == QEvent::MouseMove) {
         QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
+        qDebug() << "asdasd" << mouseEvent->x();
         overlay->setMainMarkerPosition(mouseEvent->x());
         overlay->repaint();
         overlay->raise();

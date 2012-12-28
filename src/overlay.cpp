@@ -1,6 +1,6 @@
 #include "overlay.h"
 
-
+#include <QDebug>
 
 Overlay::Overlay(QWidget *parent) :
     QWidget(parent)
@@ -13,6 +13,8 @@ Overlay::Overlay(QWidget *parent) :
 
 void Overlay::setMainMarkerPosition(int position)
 {
+    qDebug() << "asdasd" << position;
+
     mutex.lock();
     mainMarkerPosition = position;
     mutex.unlock();
@@ -21,9 +23,10 @@ void Overlay::setMainMarkerPosition(int position)
 
 void Overlay::paintEvent(QPaintEvent * paintEvent)
 {
+    offset = paintEvent->rect().x();
+
     QPainter painter(this);
     drawMainMarker(&painter);
-
     paintEvent->accept();
 }
 
@@ -31,6 +34,6 @@ void Overlay::paintEvent(QPaintEvent * paintEvent)
 void Overlay::drawMainMarker(QPainter * painter)
 {
     mutex.lock();
-    painter->fillRect(mainMarkerPosition - 1, 0, 2, size().height(), QColor::fromRgba(qRgba(50, 50, 50, 200)));
+    painter->fillRect(mainMarkerPosition + offset - 1, 0, 2, size().height(), QColor::fromRgba(qRgba(50, 50, 50, 200)));
     mutex.unlock();
 }

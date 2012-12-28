@@ -100,29 +100,29 @@ void MetaModel::printLevel(Level * level)
     qDebug() << "Level name=" << level->getName();
 
     for (int i = 0; i < level->getIds()->count(); i++) {
-        qDebug() << " Id: name=" << (*level->getIds())[i].getName() << " size=" << (*level->getIds())[i].getSize();
+        qDebug() << " Id: name=" << (*level->getIds())[i]->getName() << " size=" << (*level->getIds())[i]->getSize();
     }
 
     for (int i = 0; i < level->getSubLevels()->count(); i++) {
-        SubLevel subLevel = (*level->getSubLevels())[i];
-        qDebug() << " SubLevel name=" << subLevel.getName();
-        for (int j = 0; j < subLevel.getLogTypes()->count(); ++j) {
-            LogType logType = (*(subLevel.getLogTypes()->begin() + j));
-            qDebug() << "  LogType name=" << logType.getName()
-                     << " value=" << logType.getValue()
-                     << " indicator=" << logType.getIndicator()
-                     << " priority=" << logType.getPriority()
-                     << " log_struct=" << logType.getLogStruct();
-            for (int k = 0; k < logType.getLogCodes()->count(); ++k) {
-                qDebug() << "   LogCodes name=" << (*(logType.getLogCodes()->begin() + k)).getName()
-                         << " value=" << (*(logType.getLogCodes()->begin() + k)).getValue();
+        SubLevel * subLevel = (*level->getSubLevels())[i];
+        qDebug() << " SubLevel name=" << subLevel->getName();
+        for (int j = 0; j < subLevel->getLogTypes()->count(); ++j) {
+            LogType * logType = (*(subLevel->getLogTypes()->begin() + j));
+            qDebug() << "  LogType name=" << logType->getName()
+                     << " value=" << logType->getValue()
+                     << " indicator=" << logType->getIndicator()
+                     << " priority=" << logType->getPriority()
+                     << " log_struct=" << logType->getLogStruct();
+            for (int k = 0; k < logType->getLogCodes()->count(); ++k) {
+                qDebug() << "   LogCodes name=" << (*(logType->getLogCodes()->begin() + k)).getName()
+                         << " value=" << (*(logType->getLogCodes()->begin() + k)).getValue();
             }
         }
     }
 
 }
 
-QList<LogEvent> * MetaModel::getEvents()
+QList<LogEvent *> * MetaModel::getEvents()
 {
     return &events;
 }
@@ -188,8 +188,8 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
                 return false;
             }
             QString name = element.text();
-            level->insert(Id(size, name));
-            ids.insert(ids.end(), Id(size, name));
+            level->insert(new Id(size, name));
+            ids.insert(ids.end(), new Id(size, name));
         }
     }
 
@@ -208,7 +208,7 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             return false;
         }
         QString levelName = nameElement.text();
-        SubLevel subLevel(levelName);
+        SubLevel * subLevel = new SubLevel(levelName);
         QDomNodeList logTypes = element.elementsByTagName("log_type");
         for (int j = 0; j < logTypes.count(); j++) {
             QDomElement logTypeElement = logTypes.at(j).toElement();
@@ -234,15 +234,15 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
                 return false;
             }
 
-            LogType logType(value, name);
+            LogType * logType = new LogType(value, name);
 
-            if (indicator != logType.getIndicator()) {
+            if (indicator != logType->getIndicator()) {
                 return false;
             }
-            if (priority != logType.getPriority()) {
+            if (priority != logType->getPriority()) {
                 return false;
             }
-            if (logStruct != logType.getLogStruct()) {
+            if (logStruct != logType->getLogStruct()) {
                 return false;
             }
 
@@ -258,10 +258,10 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
                     return false;
                 }
                 LogCode logCode(logCodeValue, logCodeElement.text());
-                logType.insert(logCode);
+                logType->insert(logCode);
             }
 
-            subLevel.insert(logType);
+            subLevel->insert(logType);
         }
         level->insert(subLevel);
     }
@@ -328,19 +328,19 @@ bool MetaModel::parse(const QString fileName)
 //            logType = new LogType(type, "Undefined");
 //        }
 
-        QList<Id> idsTmp;
+        QList<Id *> idsTmp;
         unsigned int lenRead = 0;
         float indicator = 0;
         for (unsigned int i = 0; i < logType->getLogStruct(); i++) {
-            Id id = ids.at(i);
+            Id * id = ids.at(i);
 
-            char * buffer = new char[id.getSize() / 8];
-            file.read(buffer, id.getSize() / 8);
-            fileRead += id.getSize() / 8;
-            id.parse(buffer);
+            char * buffer = new char[id->getSize() / 8];
+            file.read(buffer, id->getSize() / 8);
+            fileRead += id->getSize() / 8;
+            id->parse(buffer);
             delete buffer;
 
-            lenRead += id.getSize() / 8;
+            lenRead += id->getSize() / 8;
 
             idsTmp.insert(idsTmp.end(), id);
 
@@ -360,9 +360,9 @@ bool MetaModel::parse(const QString fileName)
         }
 
 
-        LogEvent ev(logType, len, timestamp, code, indicator);
+        LogEvent * ev= new LogEvent(logType, len, timestamp, code, indicator);
         for (int i = 0; i < idsTmp.size(); i++) {
-            ev.insertId(idsTmp[i]);
+            ev->insertId(idsTmp[i]);
         }
         events.insert(events.end(), ev);
 

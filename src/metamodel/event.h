@@ -13,7 +13,7 @@ private:
     unsigned int length;
     unsigned long long int timestamp;
     unsigned int code;
-    QList<Id> ids;
+    QList<Id *> ids;
     float indicator;
 
 public:
@@ -23,10 +23,10 @@ public:
     unsigned int getLength();
     unsigned long long int getTimestamp();
     unsigned int getCode();
-    QList<Id> * getIds();
+    QList<Id *> * getIds();
     float getIndicator();
 
-    void insertId(Id);
+    void insertId(Id *);
 
     void print();
 };
