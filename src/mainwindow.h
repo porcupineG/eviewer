@@ -40,9 +40,11 @@ private:
 public:
     explicit MainWindow(QWidget *parent = 0);
     
+    void updateSources();
 signals:
     
 public slots:
+    void action(QAction *);
 
 };
 

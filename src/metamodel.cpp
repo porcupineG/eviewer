@@ -22,6 +22,7 @@ MetaModel::MetaModel(QObject * parent) :
 
 bool MetaModel::setModel(const QString file)
 {
+
     QDomDocument doc("log_model");
     bool ret = doc.setContent(new QFile(file));
 

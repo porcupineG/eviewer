@@ -4,6 +4,9 @@
 
 #include "metamodel.h"
 
+#include <QFileDialog>
+#include <QMessageBox>
+
 MainWindow::
 MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,6 +26,9 @@ MainWindow(QWidget *parent) :
     addToolBar(&toolBar);
     setStatusBar(&statusBar);
     setMenuBar(&menuBar);
+
+    connect(&menuBar, SIGNAL(triggered(QAction*)), this, SLOT(action(QAction*)));
+
     toolBar.addSeparator();
     addDockWidget(Qt::RightDockWidgetArea, &infoDock);
     addDockWidget(Qt::RightDockWidgetArea, &groupFiltersDock);
@@ -62,11 +68,43 @@ MainWindow(QWidget *parent) :
     //----------------------------------------
 
 
-    qDebug() << "parse model" << metaModel.setModel("pobicos_log_model_v2.xml");
-    qDebug() << "parse data" << metaModel.parse("log_file_2012_10_31");
+}
 
+void MainWindow::action(QAction * action)
+{
+    if (action->text() == "Load Model File") {
+        QString  fileName = QFileDialog::getOpenFileName(this, tr("Open Model File"), "./", tr("Model Files (*.xml)"));
+        if (metaModel.setModel(fileName) == true) {
+            QMessageBox msg;
+            msg.setText("Model File read correctly.");
+            msg.exec();
+        } else {
+            QMessageBox msg;
+            msg.setText("Model File read failed.");
+            msg.exec();
+        }
+    }
 
+    if (action->text() == "Load Log File") {
+        QString  fileName = QFileDialog::getOpenFileName(this, tr("Open Log File"), "./", tr("Log Files"));
+        if (metaModel.parse(fileName) == true) {
+            QMessageBox msg;
+            msg.setText("Log File read correctly.");
+            msg.exec();
 
+            updateSources();
+
+        } else {
+            QMessageBox msg;
+            msg.setText("Log File read failed.");
+            msg.exec();
+        }
+
+    }
+
+}
+
+void MainWindow::updateSources() {
     Source  * cpuAndNetwork = new Source();
     for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
         cpuAndNetwork->addLogEvent((*metaModel.getEvents())[i]);
@@ -98,27 +136,4 @@ MainWindow(QWidget *parent) :
 
 
     timeline.update();
-
-//    for (int j = 1; j < 12; j++) {
-//        Source  * source = new Source();
-//        for (int i = 0; i < 10; i++) {
-//            source->addTimestamp(i * i * j);
-//        }
-//        timeline.addSource(source);
-//    }
-
-//    for (int j = 1; j < 5; j++) {
-//        Graph  * graph = new Graph();
-//        QVector<double> x, y;
-//        for (int i = 0; i < 1000; i++) {
-//            x.append(i);
-//            y.append(qSin(i / 100));
-//        }
-
-//        graph->addData(x, y);
-//        timeline.addGraph(graph);
-//    }
-
-
 }
-
