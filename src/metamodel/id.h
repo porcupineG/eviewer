@@ -10,7 +10,6 @@ private:
     unsigned long long int value;
     QString name;
 
-
 public:
     Id(unsigned int size, QString name);
     QString * getName();

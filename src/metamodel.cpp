@@ -122,6 +122,11 @@ void MetaModel::printLevel(Level * level)
 
 }
 
+Node * MetaModel::getRoot()
+{
+    return root;
+}
+
 QList<LogEvent *> * MetaModel::getEvents()
 {
     return &events;
@@ -332,10 +337,10 @@ bool MetaModel::parse(const QString fileName)
         unsigned int lenRead = 0;
         float indicator = 0;
         for (unsigned int i = 0; i < logType->getLogStruct(); i++) {
-            Id * id = ids.at(i);
+            Id * id = new Id(ids.at(i)->getSize(), *(ids.at(i)->getName()));
 
             char * buffer = new char[id->getSize() / 8];
-            file.read(buffer, id->getSize() / 8);
+            qint64 ret = file.read(buffer, id->getSize() / 8);
             fileRead += id->getSize() / 8;
             id->parse(buffer);
             delete buffer;
@@ -377,4 +382,27 @@ bool MetaModel::parse(const QString fileName)
     }
 
     file.close();
+
+    arrangeEvents();
+
+    return true;
+}
+
+void MetaModel::arrangeEvents()
+{
+    root = new Node(0, Node::ROOT, 0);
+
+    foreach (LogEvent * event, events) {
+        Id id = *(event->getIds()->at(0));
+        if (root->findChildByValue((void *) &id, Node::ID) == 0) {
+            root->addChildNode(new Node(root, Node::ID, (void *) &id));
+            if (event->getIds()->size() > 1) {
+
+            }
+        }
+
+
+    }
+
+
 }

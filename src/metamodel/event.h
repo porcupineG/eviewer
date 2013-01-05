@@ -16,6 +16,8 @@ private:
     QList<Id *> ids;
     float indicator;
 
+
+
 public:
     LogEvent(LogType * type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator);
 

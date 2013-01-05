@@ -7,6 +7,7 @@
 
 #include "metamodel/level.h"
 #include "metamodel/event.h"
+#include "metamodel/node.h"
 
 class MetaModel : public QObject
 {
@@ -19,6 +20,8 @@ private:
 
     QList<Id *> ids;
     QList<LogEvent *> events;
+    Node * root;
+
     bool parseLevel(Level * level, QDomElement * levelElement);
 
 public:
@@ -26,8 +29,11 @@ public:
     bool setModel(const QString file);
     bool parse(const QString fileName);
 
+    void arrangeEvents();
+
     void printLevel(Level * level);
 
+    Node * getRoot();
     QList<LogEvent *> * getEvents();
     Level * getCpuAndNetwork();
     Level * getRuntimeEnvironment();
@@ -39,8 +45,6 @@ public:
     unsigned int getLogStruct(unsigned int type);
     unsigned int getLogLevel(unsigned int type);
     unsigned int getLogType(unsigned int type);
-
-
 
 signals:
     

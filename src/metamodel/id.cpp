@@ -1,5 +1,7 @@
 #include "id.h"
 
+#include <QDebug>
+
 Id::Id(unsigned int size, QString name)
 {
     this->size = size;
@@ -27,4 +29,5 @@ void Id::parse(char * data)
     for (int i = 0; i < (size / 8); i++) {
         value += ((unsigned long long int) data[i] << (i * 8));
     }
+
 }
