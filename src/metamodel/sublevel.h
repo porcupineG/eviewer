@@ -10,14 +10,16 @@ class SubLevel
 {
 private:
     QString name;
+    unsigned int ordinal;
     QMap<unsigned int, LogType *> logTypes;
 
 public:
-    SubLevel(QString name);
+    SubLevel(QString name, unsigned int ordinal);
     void insert(LogType * logType);
 
     QMap<unsigned int, LogType *> * getLogTypes();
     QString * getName();
+    unsigned int getOrdinal();
 
 };
 

@@ -148,7 +148,7 @@ bool Timeline::eventFilter(QObject * object, QEvent * event)
 
     if (object == viewport() && event->type() == QEvent::MouseMove) {
         QMouseEvent * mouseEvent = static_cast<QMouseEvent *>(event);
-        qDebug() << "asdasd" << mouseEvent->x();
+//        qDebug() << "asdasd" << mouseEvent->x();
         overlay->setMainMarkerPosition(mouseEvent->x());
         overlay->repaint();
         overlay->raise();

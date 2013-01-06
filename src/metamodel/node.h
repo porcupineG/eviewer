@@ -2,7 +2,8 @@
 #define NODE_H
 
 #include <QObject>
-#include <QList>
+#include <QMultiMap>
+#include <QMap>
 
 class Node : public QObject
 {
@@ -19,20 +20,29 @@ public:
 
 private:
     Node * parentNode;
-    QList<Node * > childNodes;
+    QMap<unsigned long long int, Node * > ids;
+    QMap<unsigned long long int, Node * > levels;
+    QMap<unsigned long long int, Node * > types;
+    QMultiMap<unsigned long long int, Node * > events;
+
     void * value;
     NodeType nodeType;
+
+    unsigned long long int getKey(Node * node);
 
 public:
     explicit Node(Node * parentNode, NodeType nodeType, void * value, QObject * parent = 0);
     
     void addChildNode(Node * childNode);
+
     Node * getParentNode();
-    QList<Node * > * getChildNodes();
+    QMap<unsigned long long int, Node *> * getIds();
+    QMap<unsigned long long int, Node *> * getLevels();
+    QMap<unsigned long long int, Node *> * getTypes();
+    QMultiMap<unsigned long long int, Node *> * getEvents();
+
     NodeType getNodeType();
     void * getValue();
-
-    Node * findChildByValue(void * value, NodeType nodeType);
 
 signals:
     

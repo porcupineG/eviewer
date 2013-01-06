@@ -1,8 +1,9 @@
 #include "sublevel.h"
 
-SubLevel::SubLevel(QString name)
+SubLevel::SubLevel(QString name, unsigned int ordinal)
 {
     this->name = name;
+    this->ordinal = ordinal;
 }
 
 void SubLevel::insert(LogType * logType)
@@ -19,4 +20,9 @@ QMap<unsigned int, LogType *> * SubLevel::getLogTypes()
 QString * SubLevel::getName()
 {
     return &name;
+}
+
+unsigned int SubLevel::getOrdinal()
+{
+    return ordinal;
 }

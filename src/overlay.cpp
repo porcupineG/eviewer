@@ -13,8 +13,6 @@ Overlay::Overlay(QWidget *parent) :
 
 void Overlay::setMainMarkerPosition(int position)
 {
-    qDebug() << "asdasd" << position;
-
     mutex.lock();
     mainMarkerPosition = position;
     mutex.unlock();

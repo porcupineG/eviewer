@@ -68,6 +68,10 @@ MainWindow(QWidget *parent) :
     //----------------------------------------
 
 
+    qDebug() << "model" << metaModel.setModel("pobicos_log_model_v2.xml");
+    qDebug() << "parse" << metaModel.parse("log_file_2012_10_31");
+
+    updateSources();
 }
 
 void MainWindow::action(QAction * action)

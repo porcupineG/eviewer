@@ -9,12 +9,14 @@ private:
     unsigned int size;
     unsigned long long int value;
     QString name;
+    unsigned int ordinal;
 
 public:
-    Id(unsigned int size, QString name);
+    Id(unsigned int size, QString name, unsigned int ordinal);
     QString * getName();
     unsigned long long int getValue();
     unsigned int getSize();
+    unsigned int getOrdinal();
 
     void parse(char * data);
 };

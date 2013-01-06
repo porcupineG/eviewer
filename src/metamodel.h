@@ -13,14 +13,16 @@ class MetaModel : public QObject
 {
     Q_OBJECT
 private:
-    Level cpuAndNetwork;
-    Level runtimeEnvironment;
-    Level process;
-    Level applicationComponent;
+    Level * cpuAndNetwork;
+    Level * runtimeEnvironment;
+    Level * process;
+    Level * applicationComponent;
 
-    QList<Id *> ids;
     QList<LogEvent *> events;
     Node * root;
+
+    unsigned int idsCount;
+    unsigned int sublevelCount;
 
     bool parseLevel(Level * level, QDomElement * levelElement);
 

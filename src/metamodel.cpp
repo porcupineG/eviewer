@@ -12,12 +12,13 @@
 
 MetaModel::MetaModel(QObject * parent) :
     QObject(parent),
-    cpuAndNetwork("CPU And Network"),
-    runtimeEnvironment("Runtime Environment"),
-    process("Process"),
-    applicationComponent("Application Component")
+    sublevelCount(0),
+    idsCount(0)
 {
-
+    cpuAndNetwork = new Level("CPU And Network");
+    runtimeEnvironment = new Level("Runtime Environment");
+    process = new Level("Process");
+    applicationComponent = new Level("Application Component");
 }
 
 bool MetaModel::setModel(const QString file)
@@ -77,19 +78,19 @@ bool MetaModel::setModel(const QString file)
         return false;
     }
 
-    if (parseLevel(&cpuAndNetwork, &cpuAndNetworkElement) == false) {
+    if (parseLevel(cpuAndNetwork, &cpuAndNetworkElement) == false) {
         return false;
     }
 
-    if (parseLevel(&runtimeEnvironment, &runtimeEnvironmentElement) == false) {
+    if (parseLevel(runtimeEnvironment, &runtimeEnvironmentElement) == false) {
         return false;
     }
 
-    if (parseLevel(&process, &processElement) == false) {
+    if (parseLevel(process, &processElement) == false) {
         return false;
     }
 
-    if (parseLevel(&applicationComponent, &applicationComponentElement) == false) {
+    if (parseLevel(applicationComponent, &applicationComponentElement) == false) {
         return false;
     }
 
@@ -135,22 +136,22 @@ QList<LogEvent *> * MetaModel::getEvents()
 
 Level * MetaModel::getCpuAndNetwork()
 {
-    return &cpuAndNetwork;
+    return cpuAndNetwork;
 }
 
 Level * MetaModel::getRuntimeEnvironment()
 {
-    return &runtimeEnvironment;
+    return runtimeEnvironment;
 }
 
 Level * MetaModel::getProcess()
 {
-    return &process;
+    return process;
 }
 
 Level * MetaModel::getApplicationComponent()
 {
-    return &applicationComponent;
+    return applicationComponent;
 }
 
 bool MetaModel::getIndicator(unsigned int type)
@@ -194,8 +195,9 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
                 return false;
             }
             QString name = element.text();
-            level->insert(new Id(size, name));
-            ids.insert(ids.end(), new Id(size, name));
+            Id * id = new Id(size, name, idsCount);
+            idsCount++;
+            level->insert(id);
         }
     }
 
@@ -214,7 +216,8 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             return false;
         }
         QString levelName = nameElement.text();
-        SubLevel * subLevel = new SubLevel(levelName);
+        SubLevel * subLevel = new SubLevel(levelName, sublevelCount);
+        sublevelCount++;
         QDomNodeList logTypes = element.elementsByTagName("log_type");
         for (int j = 0; j < logTypes.count(); j++) {
             QDomElement logTypeElement = logTypes.at(j).toElement();
@@ -282,12 +285,9 @@ bool MetaModel::parse(const QString fileName)
 
     events.clear();
 
-    int i = 0;
     unsigned int fileSize = file.size();
     unsigned int fileRead = 0;
     while ((fileRead + 10) < fileSize) {
-        i++;
-
 
         unsigned short int typeTmp;
         file.read((char *) &typeTmp, 2);
@@ -318,16 +318,16 @@ bool MetaModel::parse(const QString fileName)
         LogType * logType = 0;
 
         if (logType == 0) {
-            logType = cpuAndNetwork.getLogType(type);
+            logType = cpuAndNetwork->getLogType(type);
         }
         if (logType == 0) {
-            logType = runtimeEnvironment.getLogType(type);
+            logType = runtimeEnvironment->getLogType(type);
         }
         if (logType == 0) {
-            logType = process.getLogType(type);
+            logType = process->getLogType(type);
         }
         if (logType == 0) {
-            logType = applicationComponent.getLogType(type);
+            logType = applicationComponent->getLogType(type);
         }
 
         if (logType != 0) {
@@ -338,7 +338,42 @@ bool MetaModel::parse(const QString fileName)
         unsigned int lenRead = 0;
         float indicator = 0;
         for (unsigned int i = 0; i < logType->getLogStruct(); i++) {
-            Id * id = new Id(ids.at(i)->getSize(), *(ids.at(i)->getName()));
+
+            Id * id  = 0;
+            int size = 0;
+            int j = 0;
+
+            j -= size;
+            size = cpuAndNetwork->getIds()->size();
+            if ((size > 0) && (size > (i + j)) && (id == 0)) {
+                Id * idBase = cpuAndNetwork->getIds()->at((i + j));
+                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
+            }
+
+            j -= size;
+            size = runtimeEnvironment->getIds()->size();
+            if ((size > 0) && (size > (i + j)) && (id == 0)) {
+                Id * idBase = runtimeEnvironment->getIds()->at((i + j));
+                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
+            }
+
+            j -= size;
+            size = process->getIds()->size();
+            if ((size > 0) && (size > (i + j)) && (id == 0)) {
+                Id * idBase = process->getIds()->at((i + j));
+                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
+            }
+
+            j -= size;
+            size = applicationComponent->getIds()->size();
+            if ((size > 0) && (size > (i + j)) && (id == 0)) {
+                Id * idBase = applicationComponent->getIds()->at((i + j));
+                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
+            }
+
+            if (id == 0) {
+                return false;
+            }
 
             char * buffer = new char[id->getSize() / 8];
             qint64 ret = file.read(buffer, id->getSize() / 8);
@@ -393,15 +428,66 @@ void MetaModel::arrangeEvents()
 {
     root = new Node(0, Node::ROOT, 0);
 
-    foreach (LogEvent * event, events) {
-        Id id = *(event->getIds()->at(0));
-        if (root->findChildByValue((void *) &id, Node::ID) == 0) {
-            root->addChildNode(new Node(root, Node::ID, (void *) &id));
-            if (event->getIds()->size() > 1) {
+    Node * nodeParent = root;
+    Node * nodeChild;
 
-            }
+    foreach (Id * id, *cpuAndNetwork->getIds()) {
+        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+    }
+    foreach (SubLevel * subLevel, *cpuAndNetwork->getSubLevels()) {
+        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+        foreach (LogType * logType, *subLevel->getLogTypes()) {
+            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
         }
+    }
 
+    foreach (Id * id, *runtimeEnvironment->getIds()) {
+        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+    }
+    foreach (SubLevel * subLevel, *runtimeEnvironment->getSubLevels()) {
+        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+        foreach (LogType * logType, *subLevel->getLogTypes()) {
+            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
+        }
+    }
+
+    foreach (Id * id, *process->getIds()) {
+        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+    }
+    foreach (SubLevel * subLevel, *process->getSubLevels()) {
+        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+        foreach (LogType * logType, *subLevel->getLogTypes()) {
+            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
+        }
+    }
+
+    foreach (Id * id, *applicationComponent->getIds()) {
+        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+    }
+    foreach (SubLevel * subLevel, *applicationComponent->getSubLevels()) {
+        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
+        nodeParent->addChildNode(nodeChild);
+        nodeParent = nodeChild;
+        foreach (LogType * logType, *subLevel->getLogTypes()) {
+            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
+        }
+    }
+
+    foreach (LogEvent * event, events) {
 
     }
 
