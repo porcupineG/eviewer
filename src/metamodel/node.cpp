@@ -5,10 +5,9 @@
 #include "logtype.h"
 #include "event.h"
 
-Node::Node(Node * parentNode, NodeType nodeType, void * value, QObject * parent) :
+Node::Node(NodeType nodeType, void * value, QObject * parent) :
     QObject(parent)
 {
-    this->parentNode = parentNode;
     this->value = value;
     this->nodeType = nodeType;
 }
@@ -31,6 +30,11 @@ void Node::addChildNode(Node * child)
     default:
         break;
     }
+}
+
+void Node::setParent(Node * parent)
+{
+    this->parentNode = parent;
 }
 
 
@@ -67,6 +71,29 @@ Node::NodeType Node::getNodeType()
 void * Node::getValue()
 {
     return value;
+}
+
+Node * Node::insertToNode(Node * root, Node * node)
+{
+    switch(node->getNodeType()) {
+        case ID:
+            id = (Id *) node->getValue();
+
+            break;
+        case LEVEL:
+
+            break;
+        case TYPE:
+
+            break;
+        case EVENT:
+
+            break;
+        default:
+            break;
+    }
+
+    return 0;
 }
 
 unsigned long long int Node::getKey(Node * node)

@@ -15,6 +15,7 @@ public:
     Id(unsigned int size, QString name, unsigned int ordinal);
     QString * getName();
     unsigned long long int getValue();
+    void setValue(unsigned long long int value);
     unsigned int getSize();
     unsigned int getOrdinal();
 

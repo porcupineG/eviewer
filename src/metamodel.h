@@ -7,7 +7,7 @@
 
 #include "metamodel/level.h"
 #include "metamodel/event.h"
-#include "metamodel/node.h"
+#include "tree/idname.h"
 
 class MetaModel : public QObject
 {
@@ -19,7 +19,7 @@ private:
     Level * applicationComponent;
 
     QList<LogEvent *> events;
-    Node * root;
+    IdName * root;
 
     unsigned int idsCount;
     unsigned int sublevelCount;
@@ -35,7 +35,7 @@ public:
 
     void printLevel(Level * level);
 
-    Node * getRoot();
+    IdName * getRoot();
     QList<LogEvent *> * getEvents();
     Level * getCpuAndNetwork();
     Level * getRuntimeEnvironment();

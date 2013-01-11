@@ -40,7 +40,11 @@ SOURCES += \
     src/metamodel/event.cpp \
     src/row.cpp \
     src/timelinebar.cpp \
-    src/metamodel/node.cpp
+    src/tree/idname.cpp \
+    src/tree/idvalue.cpp \
+    src/tree/levelname.cpp \
+    src/tree/typevalue.cpp \
+    src/tree/typename.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -67,7 +71,11 @@ HEADERS += \
     src/metamodel/event.h \
     src/row.h \
     src/timelinebar.h \
-    src/metamodel/node.h
+    src/tree/idname.h \
+    src/tree/idvalue.h \
+    src/tree/levelname.h \
+    src/tree/typevalue.h \
+    src/tree/typename.h
 
 RESOURCES += \
     res.qrc

@@ -19,6 +19,11 @@ unsigned long long Id::getValue()
     return value;
 }
 
+void Id::setValue(unsigned long long value)
+{
+    this->value = value;
+}
+
 unsigned int Id::getSize()
 {
     return size;

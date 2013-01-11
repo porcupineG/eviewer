@@ -124,7 +124,7 @@ void MetaModel::printLevel(Level * level)
 
 }
 
-Node * MetaModel::getRoot()
+IdName * MetaModel::getRoot()
 {
     return root;
 }
@@ -197,6 +197,9 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             QString name = element.text();
             Id * id = new Id(size, name, idsCount);
             idsCount++;
+            if (idsCount == 1) {
+                root = new IdName(name);
+            }
             level->insert(id);
         }
     }
@@ -426,70 +429,56 @@ bool MetaModel::parse(const QString fileName)
 
 void MetaModel::arrangeEvents()
 {
-    root = new Node(0, Node::ROOT, 0);
-
-    Node * nodeParent = root;
-    Node * nodeChild;
-
-    foreach (Id * id, *cpuAndNetwork->getIds()) {
-        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-    }
-    foreach (SubLevel * subLevel, *cpuAndNetwork->getSubLevels()) {
-        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-        foreach (LogType * logType, *subLevel->getLogTypes()) {
-            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
-        }
-    }
-
-    foreach (Id * id, *runtimeEnvironment->getIds()) {
-        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-    }
-    foreach (SubLevel * subLevel, *runtimeEnvironment->getSubLevels()) {
-        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-        foreach (LogType * logType, *subLevel->getLogTypes()) {
-            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
-        }
-    }
-
-    foreach (Id * id, *process->getIds()) {
-        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-    }
-    foreach (SubLevel * subLevel, *process->getSubLevels()) {
-        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-        foreach (LogType * logType, *subLevel->getLogTypes()) {
-            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
-        }
-    }
-
-    foreach (Id * id, *applicationComponent->getIds()) {
-        nodeChild = new Node(nodeParent, Node::ID, (void *) id);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-    }
-    foreach (SubLevel * subLevel, *applicationComponent->getSubLevels()) {
-        nodeChild = new Node(nodeParent, Node::LEVEL, (void *) subLevel);
-        nodeParent->addChildNode(nodeChild);
-        nodeParent = nodeChild;
-        foreach (LogType * logType, *subLevel->getLogTypes()) {
-            nodeParent->addChildNode(new Node(nodeParent, Node::TYPE, (void *) logType));
-        }
-    }
+    root = new IdName();
 
     foreach (LogEvent * event, events) {
+        foreach (Id * id, *(event->getIds())) {
 
+        }
     }
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
