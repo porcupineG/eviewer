@@ -1,6 +1,7 @@
 #include "idvalue.h"
 
-IdValue::IdValue(unsigned long long value)
+IdValue::IdValue(unsigned long long value) :
+    child(0)
 {
     this->value = value;
 }
@@ -17,7 +18,13 @@ IdName *IdValue::getParent()
 
 void IdValue::setChild(IdName *child)
 {
+    if (this->child != 0) {
+        delete this->child;
+    }
+
     this->child = child;
+
+    child->setParent(this);
 }
 
 IdName *IdValue::getChild()
@@ -25,9 +32,11 @@ IdName *IdValue::getChild()
     return child;
 }
 
-void IdValue::insertChild(LevelName *child)
+LevelName * IdValue::insertChild(LevelName * child)
 {
-    childs.insert(child->getName(), child);
+    LevelName * level = *(childs.insert(child->getName(), child));
+    level->setParent(this);
+    return level;
 }
 
 QMap<QString, LevelName *> *IdValue::getChilds()

@@ -27,7 +27,7 @@ public:
     IdName * getParent();
     void setChild(IdName * child);
     IdName * getChild();
-    void insertChild(LevelName * child);
+    LevelName * insertChild(LevelName * child);
     QMap<QString, LevelName *> * getChilds();
     unsigned long long int getValue();
 

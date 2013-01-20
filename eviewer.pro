@@ -44,7 +44,8 @@ SOURCES += \
     src/tree/idvalue.cpp \
     src/tree/levelname.cpp \
     src/tree/typevalue.cpp \
-    src/tree/typename.cpp
+    src/tree/typename.cpp \
+    src/tree.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -75,7 +76,8 @@ HEADERS += \
     src/tree/idvalue.h \
     src/tree/levelname.h \
     src/tree/typevalue.h \
-    src/tree/typename.h
+    src/tree/typename.h \
+    src/tree.h
 
 RESOURCES += \
     res.qrc

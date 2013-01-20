@@ -22,7 +22,7 @@ public:
     LevelName(QString name);
 
     QMap<QString, TypeName *> * getChilds();
-    void insertChild(TypeName * value);
+    TypeName * insertChild(TypeName * value);
     QString getName();
     IdValue * getParent();
     void setParent(IdValue * parent);

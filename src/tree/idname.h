@@ -24,7 +24,7 @@ public:
     IdName(QString name);
 
     QMap<unsigned long long int, IdValue *> * getChilds();
-    void insertChild(IdValue * value);
+    IdValue * insertChild(IdValue * value);
     QString getName();
     IdValue * getParent();
     void setParent(IdValue * parent);

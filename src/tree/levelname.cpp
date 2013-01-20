@@ -10,9 +10,11 @@ QMap<QString, TypeName *> *LevelName::getChilds()
     return &childs;
 }
 
-void LevelName::insertChild(TypeName * value)
+TypeName * LevelName::insertChild(TypeName * value)
 {
-    childs.insert(value->getName(), value);
+    TypeName * type = *(childs.insert(value->getName(), value));
+    type->setParent(this);
+    return type;
 }
 
 QString LevelName::getName()

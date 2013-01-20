@@ -124,10 +124,11 @@ void MetaModel::printLevel(Level * level)
 
 }
 
-IdName * MetaModel::getRoot()
+Tree *MetaModel::getTree()
 {
-    return root;
+    return &root;
 }
+
 
 QList<LogEvent *> * MetaModel::getEvents()
 {
@@ -179,6 +180,41 @@ unsigned int MetaModel::getLogType(unsigned int type)
     return 0;
 }
 
+Id * MetaModel::getId(int idNum)
+{
+    Id * id = 0;
+    int size;
+
+    size = cpuAndNetwork->getIds()->size();
+    if (size < idNum) {
+        id = cpuAndNetwork->getIds()->at(idNum);
+        return id;
+    }
+    idNum = idNum - size;
+
+    size = runtimeEnvironment->getIds()->size();
+    if (size < idNum) {
+        id = runtimeEnvironment->getIds()->at(idNum);
+        return id;
+    }
+    idNum = idNum - size;
+
+    size = process->getIds()->size();
+    if (size < idNum) {
+        id = process->getIds()->at(idNum);
+        return id;
+    }
+    idNum = idNum - size;
+
+    size = applicationComponent->getIds()->size();
+    if (size < idNum) {
+        id = applicationComponent->getIds()->at(idNum);
+        return id;
+    }
+    idNum = idNum - size;
+
+    return id;
+}
 
 bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
 {
@@ -197,9 +233,6 @@ bool MetaModel::parseLevel(Level * level, QDomElement * levelElement)
             QString name = element.text();
             Id * id = new Id(size, name, idsCount);
             idsCount++;
-            if (idsCount == 1) {
-                root = new IdName(name);
-            }
             level->insert(id);
         }
     }
@@ -342,37 +375,7 @@ bool MetaModel::parse(const QString fileName)
         float indicator = 0;
         for (unsigned int i = 0; i < logType->getLogStruct(); i++) {
 
-            Id * id  = 0;
-            int size = 0;
-            int j = 0;
-
-            j -= size;
-            size = cpuAndNetwork->getIds()->size();
-            if ((size > 0) && (size > (i + j)) && (id == 0)) {
-                Id * idBase = cpuAndNetwork->getIds()->at((i + j));
-                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
-            }
-
-            j -= size;
-            size = runtimeEnvironment->getIds()->size();
-            if ((size > 0) && (size > (i + j)) && (id == 0)) {
-                Id * idBase = runtimeEnvironment->getIds()->at((i + j));
-                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
-            }
-
-            j -= size;
-            size = process->getIds()->size();
-            if ((size > 0) && (size > (i + j)) && (id == 0)) {
-                Id * idBase = process->getIds()->at((i + j));
-                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
-            }
-
-            j -= size;
-            size = applicationComponent->getIds()->size();
-            if ((size > 0) && (size > (i + j)) && (id == 0)) {
-                Id * idBase = applicationComponent->getIds()->at((i + j));
-                id = new Id(idBase->getSize(), *(idBase->getName()), idBase->getOrdinal());
-            }
+            Id * id  = getId(i);
 
             if (id == 0) {
                 return false;
@@ -404,13 +407,14 @@ bool MetaModel::parse(const QString fileName)
         }
 
 
-        LogEvent * ev= new LogEvent(logType, len, timestamp, code, indicator);
+        LogEvent * ev= new LogEvent(logType, len, timestamp, code, indicator, getSubLevel(logType));
         for (int i = 0; i < idsTmp.size(); i++) {
             ev->insertId(idsTmp[i]);
         }
         events.insert(events.end(), ev);
 
         } else {
+
             if (len > 10) {
                 char * buffer = new char[len - 10];
                 file.read(buffer, len - 10);
@@ -427,15 +431,49 @@ bool MetaModel::parse(const QString fileName)
     return true;
 }
 
-void MetaModel::arrangeEvents()
-{
-    root = new IdName();
-
-    foreach (LogEvent * event, events) {
-        foreach (Id * id, *(event->getIds())) {
-
+SubLevel * MetaModel::getSubLevel(LogType * logType) {
+    foreach (SubLevel * sub, *(cpuAndNetwork->getSubLevels())) {
+        foreach (LogType * type, *(sub->getLogTypes())) {
+            if ((type->getValue() == logType->getValue()) && (type->getName() == logType->getName())) {
+                return sub;
+            }
         }
     }
+
+    foreach (SubLevel * sub, *(runtimeEnvironment->getSubLevels())) {
+        foreach (LogType * type, *(sub->getLogTypes())) {
+            if ((type->getValue() == logType->getValue()) && (type->getName() == logType->getName())) {
+                return sub;
+            }
+        }
+    }
+
+    foreach (SubLevel * sub, *(process->getSubLevels())) {
+        foreach (LogType * type, *(sub->getLogTypes())) {
+            if ((type->getValue() == logType->getValue()) && (type->getName() == logType->getName())) {
+                return sub;
+            }
+        }
+    }
+
+    foreach (SubLevel * sub, *(applicationComponent->getSubLevels())) {
+        foreach (LogType * type, *(sub->getLogTypes())) {
+            if ((type->getValue() == logType->getValue()) && (type->getName() == logType->getName())) {
+                return sub;
+            }
+        }
+    }
+
+    return 0;
+
+}
+
+void MetaModel::arrangeEvents()
+{
+    foreach (LogEvent * event, events) {
+        root.insert(event);
+    }
+
 }
 
 

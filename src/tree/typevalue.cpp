@@ -5,7 +5,7 @@ TypeValue::TypeValue(unsigned long long value)
     this->value = value;
 }
 
-QMap<unsigned long long, LogEvent *> *TypeValue::getChilds()
+QMultiMap<unsigned long long, LogEvent *> *TypeValue::getChilds()
 {
     return &childs;
 }

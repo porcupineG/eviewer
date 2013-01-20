@@ -8,6 +8,8 @@
 #include "typevalue.h"
 #include "../metamodel/event.h"
 
+#include <QMultiMap>
+
 class LogEvent;
 class TypeName;
 
@@ -15,12 +17,12 @@ class TypeValue
 {
 private:
     TypeName * parent;
-    QMap<unsigned long long int, LogEvent *> childs;
+    QMultiMap<unsigned long long int, LogEvent *> childs;
     unsigned long long int value;
 
 public:
     TypeValue(unsigned long long int value);
-    QMap<unsigned long long int, LogEvent *> * getChilds();
+    QMultiMap<unsigned long long int, LogEvent *> * getChilds();
     void insertChild(LogEvent * value);
     unsigned long long int getValue();
     TypeName * getParent();

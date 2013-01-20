@@ -21,7 +21,7 @@ private:
 public:
     TypeName(QString name);
     QMap<unsigned long long int, TypeValue *> * getChilds();
-    void insertChild(TypeValue * value);
+    TypeValue *insertChild(TypeValue * value);
     QString getName();
     LevelName * getParent();
     void setParent(LevelName * parent);

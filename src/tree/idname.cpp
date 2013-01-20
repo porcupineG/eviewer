@@ -10,9 +10,10 @@ QMap<unsigned long long, IdValue *> *IdName::getChilds()
     return &childs;
 }
 
-void IdName::insertChild(IdValue * value)
+IdValue * IdName::insertChild(IdValue * value)
 {
-    childs.insert(value->getValue(), value);
+    value->setParent(this);
+    return *(childs.insert(value->getValue(), value));
 }
 
 QString IdName::getName()

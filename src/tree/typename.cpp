@@ -10,9 +10,11 @@ QMap<unsigned long long, TypeValue *> *TypeName::getChilds()
     return &childs;
 }
 
-void TypeName::insertChild(TypeValue *value)
+TypeValue * TypeName::insertChild(TypeValue *value)
 {
-    childs.insert(value->getValue(), value);
+    TypeValue * val = *(childs.insert(value->getValue(), value));
+    val->setParent(this);
+    return val;
 }
 
 QString TypeName::getName()

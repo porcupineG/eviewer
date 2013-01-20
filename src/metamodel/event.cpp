@@ -3,13 +3,14 @@
 
 #include <QDebug>
 
-LogEvent::LogEvent(LogType * type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator)
+LogEvent::LogEvent(LogType * type, unsigned int length, unsigned int timestamp, unsigned int code, float indicator, SubLevel * subLevel)
 {
     this->type = type;
     this->length = length;
     this->timestamp = timestamp;
     this->code = code;
     this->indicator = indicator;
+    this->subLevel = subLevel;
 }
 
 LogType * LogEvent::getType()
@@ -40,6 +41,11 @@ QList<Id *> * LogEvent::getIds()
 float LogEvent::getIndicator()
 {
     return indicator;
+}
+
+SubLevel * LogEvent::getSubLevel()
+{
+    return subLevel;
 }
 
 void LogEvent::insertId(Id * id)

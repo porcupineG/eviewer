@@ -71,6 +71,10 @@ MainWindow(QWidget *parent) :
     qDebug() << "model" << metaModel.setModel("pobicos_log_model_v2.xml");
     qDebug() << "parse" << metaModel.parse("log_file_2012_10_31");
 
+    Tree * tree = metaModel.getTree();
+
+
+
     updateSources();
 }
 
@@ -115,6 +119,7 @@ void MainWindow::updateSources() {
         cpuAndNetwork->setName("Cpu And Network");
     }
     timeline.addSource(cpuAndNetwork);
+
 
     Source  * runtimeEnvironment = new Source();
     for (int i = 0; i < metaModel.getEvents()->size(); ++i) {
