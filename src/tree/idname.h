@@ -10,6 +10,8 @@
 #include "typevalue.h"
 #include "../metamodel/event.h"
 
+#include <QTreeWidgetItem>
+
 class IdValue;
 
 class IdName
@@ -19,6 +21,7 @@ private:
     IdValue * parent;
     QMap<unsigned long long int, IdValue *> childs;
     QString name;
+    QTreeWidgetItem * treeWidgetItem;
 
 public:
     IdName(QString name);
@@ -28,6 +31,8 @@ public:
     QString getName();
     IdValue * getParent();
     void setParent(IdValue * parent);
+
+    QTreeWidgetItem * getTreeWidgetItem();
 };
 
 #endif // IDNAME_H

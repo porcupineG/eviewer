@@ -49,7 +49,7 @@ public:
     unsigned int getLogLevel(unsigned int type);
     unsigned int getLogType(unsigned int type);
 
-    Id * getId(int idNum);
+    Id * getId(unsigned int idNum);
 
     SubLevel * getSubLevel(LogType *logType);
 

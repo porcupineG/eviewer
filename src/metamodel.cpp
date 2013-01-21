@@ -180,38 +180,46 @@ unsigned int MetaModel::getLogType(unsigned int type)
     return 0;
 }
 
-Id * MetaModel::getId(int idNum)
+Id * MetaModel::getId(unsigned int idNum)
 {
     Id * id = 0;
-    int size;
+    unsigned int size;
 
     size = cpuAndNetwork->getIds()->size();
-    if (size < idNum) {
+    if (size > idNum) {
         id = cpuAndNetwork->getIds()->at(idNum);
         return id;
     }
-    idNum = idNum - size;
+    if (idNum >= size) {
+        idNum = idNum - size;
+    }
 
     size = runtimeEnvironment->getIds()->size();
-    if (size < idNum) {
+    if (size > idNum) {
         id = runtimeEnvironment->getIds()->at(idNum);
         return id;
     }
-    idNum = idNum - size;
+    if (idNum >= size) {
+        idNum = idNum - size;
+    }
 
     size = process->getIds()->size();
-    if (size < idNum) {
+    if (size > idNum) {
         id = process->getIds()->at(idNum);
         return id;
     }
-    idNum = idNum - size;
+    if (idNum >= size) {
+        idNum = idNum - size;
+    }
 
     size = applicationComponent->getIds()->size();
-    if (size < idNum) {
+    if (size > idNum) {
         id = applicationComponent->getIds()->at(idNum);
         return id;
     }
-    idNum = idNum - size;
+    if (idNum >= size) {
+        idNum = idNum - size;
+    }
 
     return id;
 }
@@ -377,23 +385,24 @@ bool MetaModel::parse(const QString fileName)
 
             Id * id  = getId(i);
 
-            if (id == 0) {
-                return false;
+                if (id != 0) {
+
+                char * buffer = new char[id->getSize() / 8];
+                qint64 ret = file.read(buffer, id->getSize() / 8);
+                fileRead += id->getSize() / 8;
+                id->parse(buffer);
+                delete buffer;
+
+                lenRead += id->getSize() / 8;
+
+                idsTmp.insert(idsTmp.end(), id);
+
+                if (lenRead > (len - 10)) {
+                    return false;
+                }
+
             }
 
-            char * buffer = new char[id->getSize() / 8];
-            qint64 ret = file.read(buffer, id->getSize() / 8);
-            fileRead += id->getSize() / 8;
-            id->parse(buffer);
-            delete buffer;
-
-            lenRead += id->getSize() / 8;
-
-            idsTmp.insert(idsTmp.end(), id);
-
-            if (lenRead > (len - 10)) {
-                return false;
-            }
         }
 
         if (logType->getIndicator() == true) {

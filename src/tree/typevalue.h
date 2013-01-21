@@ -9,6 +9,7 @@
 #include "../metamodel/event.h"
 
 #include <QMultiMap>
+#include <QTreeWidgetItem>
 
 class LogEvent;
 class TypeName;
@@ -19,6 +20,8 @@ private:
     TypeName * parent;
     QMultiMap<unsigned long long int, LogEvent *> childs;
     unsigned long long int value;
+    QTreeWidgetItem * treeWidgetItem;
+
 
 public:
     TypeValue(unsigned long long int value);
@@ -27,6 +30,8 @@ public:
     unsigned long long int getValue();
     TypeName * getParent();
     void setParent(TypeName * parent);
+    QTreeWidgetItem * getTreeWidgetItem();
+
 };
 
 #endif // TYPEVALUE_H

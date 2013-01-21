@@ -8,6 +8,8 @@
 #include "typevalue.h"
 #include "../metamodel/event.h"
 
+#include <QTreeWidgetItem>
+
 class IdName;
 class LevelName;
 
@@ -19,6 +21,7 @@ private:
     IdName * child;
     QMap<QString, LevelName *> childs;
     unsigned long long int value;
+    QTreeWidgetItem * treeWidgetItem;
 
 public:
     IdValue(unsigned long long int value);
@@ -30,6 +33,8 @@ public:
     LevelName * insertChild(LevelName * child);
     QMap<QString, LevelName *> * getChilds();
     unsigned long long int getValue();
+    QTreeWidgetItem * getTreeWidgetItem();
+
 
 };
 

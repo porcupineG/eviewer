@@ -8,13 +8,17 @@
 #include "tree/typevalue.h"
 #include "metamodel/event.h"
 
+#include <QTreeWidget>
+
 class Tree
 {
     IdValue * root;
+    QTreeWidget treeWidget;
 
 public:
     Tree();
     IdName * getRoot();
+    QTreeWidget * getTreeWidget();
     void insert(LogEvent * event);
 
 };

@@ -101,31 +101,6 @@ void Timeline::sizeUpdate() {
 void Timeline::update()
 {
     clear();
-    //clearContents();
-
-    //setRowCount(sources.count());
-
-    setColumnCount(2);
-
-    QTreeWidgetItem * topLevel = new QTreeWidgetItem();
-    topLevel->setText(0, "Timeline");
-    insertTopLevelItem(0, topLevel);
-    setItemWidget(topLevel, 1, new TimelineBar());
-    setItemExpanded(topLevel, true);
-
-    int row = 0;
-    foreach (Source * source, sources) {
-        QTreeWidgetItem * child = new QTreeWidgetItem();
-        child->setText(0, *source->getName());
-        child->setSizeHint(1, QSize(100, 30));
-        topLevel->addChild(child);
-        setItemWidget(child, 1, source);
-        setItemExpanded(child, true);
-        row++;
-    }
-
-    resizeColumnToContents(0);
-
 }
 
 bool Timeline::eventFilter(QObject * object, QEvent * event)

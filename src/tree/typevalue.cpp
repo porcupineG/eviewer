@@ -3,6 +3,8 @@
 TypeValue::TypeValue(unsigned long long value)
 {
     this->value = value;
+    treeWidgetItem = new QTreeWidgetItem();
+    treeWidgetItem->setText(0, QString::number(value));
 }
 
 QMultiMap<unsigned long long, LogEvent *> *TypeValue::getChilds()
@@ -28,4 +30,9 @@ TypeName * TypeValue::getParent()
 void TypeValue::setParent(TypeName *parent)
 {
     this->parent = parent;
+}
+
+QTreeWidgetItem * TypeValue::getTreeWidgetItem()
+{
+    return treeWidgetItem;
 }

@@ -62,20 +62,20 @@ MainWindow(QWidget *parent) :
 
     connect(&timeline, SIGNAL(viewInfoWidget(QWidget *)), &infoDock, SLOT(viewInfoWidget(QWidget *)));
 
-    setCentralWidget(&timeline);
+//    setCentralWidget(&timeline);
 
 
     //----------------------------------------
 
 
     qDebug() << "model" << metaModel.setModel("pobicos_log_model_v2.xml");
-    qDebug() << "parse" << metaModel.parse("log_file_2012_10_31");
+    qDebug() << "parse" << metaModel.parse("log_file_2012_12_07");
 
     Tree * tree = metaModel.getTree();
+    setCentralWidget(tree->getTreeWidget());
 
 
-
-    updateSources();
+//    updateSources();
 }
 
 void MainWindow::action(QAction * action)

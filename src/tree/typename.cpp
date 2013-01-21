@@ -3,6 +3,8 @@
 TypeName::TypeName(QString name)
 {
     this->name = name;
+    treeWidgetItem = new QTreeWidgetItem();
+    treeWidgetItem->setText(0, name);
 }
 
 QMap<unsigned long long, TypeValue *> *TypeName::getChilds()
@@ -12,7 +14,16 @@ QMap<unsigned long long, TypeValue *> *TypeName::getChilds()
 
 TypeValue * TypeName::insertChild(TypeValue *value)
 {
-    TypeValue * val = *(childs.insert(value->getValue(), value));
+    TypeValue * val;
+
+    QMap<unsigned long long int, TypeValue *>::iterator it = childs.find(value->getValue());
+    if (it == childs.end()) {
+        val = *(childs.insert(value->getValue(), value));
+    } else {
+        val = *it;
+    }
+
+    treeWidgetItem->addChild(val->getTreeWidgetItem());
     val->setParent(this);
     return val;
 }
@@ -30,4 +41,9 @@ LevelName *TypeName::getParent()
 void TypeName::setParent(LevelName *parent)
 {
     this->parent = parent;
+}
+
+QTreeWidgetItem *TypeName::getTreeWidgetItem()
+{
+    return treeWidgetItem;
 }

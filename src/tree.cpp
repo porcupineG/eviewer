@@ -3,11 +3,19 @@
 Tree::Tree()
 {
     root = new IdValue(0);
+//    QTreeWidgetItem * topItem = new QTreeWidgetItem();
+//    topItem->setText(0, "ROOT");
+    treeWidget.insertTopLevelItem(0, root->getTreeWidgetItem());
 }
 
 IdName * Tree::getRoot()
 {
     return root->getChild();
+}
+
+QTreeWidget * Tree::getTreeWidget()
+{
+    return &treeWidget;
 }
 
 void Tree::insert(LogEvent * event)

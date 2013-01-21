@@ -1,8 +1,12 @@
 #include "idname.h"
 
+#include <QDebug>
+
 IdName::IdName(QString name)
 {
     this->name = name;
+    treeWidgetItem = new QTreeWidgetItem();
+    treeWidgetItem->setText(0, name);
 }
 
 QMap<unsigned long long, IdValue *> *IdName::getChilds()
@@ -12,8 +16,19 @@ QMap<unsigned long long, IdValue *> *IdName::getChilds()
 
 IdValue * IdName::insertChild(IdValue * value)
 {
-    value->setParent(this);
-    return *(childs.insert(value->getValue(), value));
+    qDebug() << "---";
+    qDebug() << (unsigned long int) value;
+
+    IdValue * val = *(childs.find(value->getValue()));
+    if (childs.find(value->getValue()) == childs.end()) {
+        val = *(childs.insert(value->getValue(), value));
+    }
+
+    qDebug() << (unsigned long int) val;
+
+    val->setParent(this);
+    treeWidgetItem->addChild(val->getTreeWidgetItem());
+    return val;
 }
 
 QString IdName::getName()
@@ -29,4 +44,9 @@ IdValue * IdName::getParent()
 void IdName::setParent(IdValue *parent)
 {
     this->parent = parent;
+}
+
+QTreeWidgetItem *IdName::getTreeWidgetItem()
+{
+    return treeWidgetItem;
 }
