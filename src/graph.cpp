@@ -37,7 +37,12 @@ void Graph::addData(QVector<double> & x, QVector<double> & y)
 {
     this->x = x;
     this->y = y;
-    qDebug() << x;
+}
+
+void Graph::appendData(double timestamp, double value)
+{
+    x.append(timestamp);
+    y.append(value);
 }
 
 

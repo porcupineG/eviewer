@@ -16,15 +16,11 @@ QMap<unsigned long long, IdValue *> *IdName::getChilds()
 
 IdValue * IdName::insertChild(IdValue * value)
 {
-    qDebug() << "---";
-    qDebug() << (unsigned long int) value;
 
     IdValue * val = *(childs.find(value->getValue()));
     if (childs.find(value->getValue()) == childs.end()) {
         val = *(childs.insert(value->getValue(), value));
     }
-
-    qDebug() << (unsigned long int) val;
 
     val->setParent(this);
     treeWidgetItem->addChild(val->getTreeWidgetItem());

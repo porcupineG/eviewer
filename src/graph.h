@@ -32,6 +32,7 @@ public slots:
     void setTimeRange(unsigned long long int start, unsigned long long int stop);
     void rowClicked(int row);
     void addData(QVector<double> & x, QVector<double> & y);
+    void appendData(double timestamp, double value);
 
 };
 

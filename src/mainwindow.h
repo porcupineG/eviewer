@@ -11,6 +11,7 @@
 #include "groupfiltersdock.h"
 #include "settingsdock.h"
 #include "timeline.h"
+#include "tree.h"
 
 class MainWindow : public QMainWindow
 {
@@ -36,6 +37,8 @@ private:
     MetaModel metaModel;
     /* --- */
 
+    Tree * tree;
+
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -45,6 +48,8 @@ signals:
     
 public slots:
     void action(QAction *);
+    void zoomIn();
+    void zoomOut();
 
 };
 

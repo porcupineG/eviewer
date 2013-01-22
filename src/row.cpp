@@ -4,6 +4,8 @@
 #include <QPaintEvent>
 #include <QResizeEvent>
 
+#include <QDebug>
+
 Row::Row(QWidget * parent) :
     QWidget(parent)
 {
@@ -58,6 +60,7 @@ bool Row::eventFilter(QObject * obj, QEvent * ev) {
     if ((obj == this) && (ev->type() == QEvent::Resize)) {
         QResizeEvent * e = static_cast<QResizeEvent *>(ev);
         this->pixPerMs = (double) e->size().width() / (double) (globalStopTime - globalStartTime);
+        qDebug() << pixPerMs;
         repaint();
     }
 

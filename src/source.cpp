@@ -112,7 +112,7 @@ void Source::paint(QRect rect)
     int height = size().height();
 
     unsigned long long tsBegin = globalStartTime + qRound64(xR / pixPerMs);
-    unsigned long long tsEnd = tsBegin + + qRound64(wR / pixPerMs);
+    unsigned long long tsEnd = tsBegin + qRound64(wR / pixPerMs);
 
     QMultiMap<unsigned long long int, LogEvent *>::iterator it = events.lowerBound(tsBegin);
     if (it != events.begin()) { it--; }
@@ -143,6 +143,8 @@ void Source::paint(QRect rect)
 
         int w = qRound((((tsNext - ts) * pixPerMs) / s));
         int x = qRound((ts - globalStartTime) * pixPerMs);
+
+        qDebug() << "ts" << ts;
 
         for (int i = 0; i < s; ++i) {
 

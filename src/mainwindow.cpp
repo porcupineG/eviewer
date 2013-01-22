@@ -71,9 +71,12 @@ MainWindow(QWidget *parent) :
     qDebug() << "model" << metaModel.setModel("pobicos_log_model_v2.xml");
     qDebug() << "parse" << metaModel.parse("log_file_2012_12_07");
 
-    Tree * tree = metaModel.getTree();
+    tree = metaModel.getTree();
     setCentralWidget(tree->getTreeWidget());
+    tree->updateWidgets();
 
+   connect(&zoomOutAction, SIGNAL(triggered()), this, SLOT(zoomOut()));
+   connect(&zoomInAction, SIGNAL(triggered()), this, SLOT(zoomIn()));
 
 //    updateSources();
 }
@@ -110,6 +113,17 @@ void MainWindow::action(QAction * action)
 
     }
 
+}
+
+void MainWindow::zoomIn()
+{
+
+    tree->zoomIn();
+}
+
+void MainWindow::zoomOut()
+{
+    tree->zoomOut();
 }
 
 void MainWindow::updateSources() {
